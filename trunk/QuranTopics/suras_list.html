@@ -1,0 +1,27 @@
+<html>
+
+    <body dir="rtl">
+	  <h1>
+	      القرآن الكريم
+	  </h1>
+
+        <table border="0">
+	    {% for sura in suras %}
+	    	<tr>
+	    		<td> {{ sura.number }}. </td>
+	    		<td> <a href="display_sura?sura={{ sura.number }}" > {{ sura.name }} </a> </td>
+	    		<td> ( {{ sura.number_of_ayat }}
+	    			{% if sura.number_of_ayat  %}
+													    		 آيات
+				    {% else %}
+																    آية
+				    {% endif %}
+	    		  ) 
+	    		</td>
+	    	</tr>
+	    {% endfor %}
+	    </table>
+    
+    </body>
+
+</html>

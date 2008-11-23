@@ -1,0 +1,14 @@
+application: qurantopics
+version: 1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /stylesheets
+  static_dir: stylesheets
+
+- url: /load/.*
+  script: data_loader.py
+
+- url: /.*
+  script: qurantopics.py
