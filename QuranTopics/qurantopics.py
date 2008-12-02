@@ -24,7 +24,7 @@ class MainPage(webapp.RequestHandler):
 class SurasListPage(webapp.RequestHandler):
   def get(self):
 
-    suras = Sura.all().fetch(114)
+    suras = Sura.gql("order by number").fetch(114)
 
     template_values = {
       'suras': suras
@@ -40,6 +40,7 @@ class SurasDisplayPage(webapp.RequestHandler):
     sura_number = self.request.get('sura')
     sura = Sura.gql("WHERE number = :number ", number = int(sura_number)).fetch(1)[0]
     ayat = sura.aya_set
+    ayat.order('number')
 
     template_values = {
       'sura': sura,
