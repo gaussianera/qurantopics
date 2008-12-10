@@ -1,0 +1,55 @@
+﻿<html>
+  <head>
+      <title> إضافة أو تعديل موضوع </title>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+  </head>
+  
+  <body dir="rtl">
+  
+  <h1>
+      مواضيع القرآن الكريم
+  </h1>
+
+  <form method="post">
+  
+			  <label> عنوان الموضوع: </label>
+	 <input name="title" type="text" size="75"/>
+	 <br/>
+			  
+			  <label> سورة  </label>
+     <input name="sura" type="text" />
+			  <label> من آيه  </label>
+     <input name="from_aya" type="text" />
+			  <label> حتى آية  </label>
+	 <input name="to_aya" type="text" />
+			  <input name="add" type="submit" value="أضف" >
+			  
+     <br/>
+			  <input name="remove" type="submit" value="احذف" >
+     <br/>
+     <input name="move_to_position" type="submit" value="غير الترتيب إلى" >
+     <input name="to_position" type="text" />
+			  
+	 <br/>
+	  
+	  <table>
+	      <tr>
+	          <th> سورة </th>
+	          <th> رقم الآية </th>
+	          <th> آية </th>
+	      </tr>
+	      {% for aya in ayat %}
+	      <tr>
+              <input name="sura_{{ forloop.counter0 }}" value="{{ aya.sura.number }}" type="hidden"/>       
+              <input name="aya_{{ forloop.counter0 }}" value="{{ aya.number }}" type="hidden"/>       
+	          <td> {{ aya.sura.number }} </td>
+	          <td> {{ aya.number }} </td>
+	          <td> {{ aya.content }} </td>
+	      </tr>
+	      {% endfor %}
+	  </table>
+      
+  </form>
+
+  </body>
+</html>

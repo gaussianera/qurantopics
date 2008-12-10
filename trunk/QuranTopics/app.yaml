@@ -10,5 +10,11 @@ handlers:
 - url: /load/.*
   script: data_loader.py
 
+- url: /load_all/.*
+  script: data_loader_one_step.py
+
+- url: /topics/.*
+  script: topics.py
+
 - url: /.*
   script: qurantopics.py
