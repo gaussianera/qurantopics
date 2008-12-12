@@ -30,7 +30,7 @@ class CreateNewTopic(webapp.RequestHandler):
             sura = Sura.get_by_number(topics_edit_view.sura)
             ayat = sura.get_ayat_query_in_range(topics_edit_view.from_aya, topics_edit_view.to_aya)
             added_ayat = self.make_ayat_display_from_ayat(ayat)
-            self.merge_added_ayat_to_selected(selected_ayat, added_ayat)
+            self.merge_added_ayat_to_topic_ayat(selected_ayat, added_ayat)
         else:
             logging.info("not in add")
 
@@ -77,16 +77,32 @@ class CreateNewTopic(webapp.RequestHandler):
 
             
     def make_ayat_from_ayat_display(self, ayat_display):
+        logging.debug("start: make_ayat_from_ayat_display")    
         ayat = []
         for aya_display in ayat_display:
             aya = Aya.get_by_sura_and_aya_number(aya_display.sura_number, aya_display.aya_number)
             ayat.append(aya)
+        logging.debug("end: make_ayat_from_ayat_display")    
         return ayat
             
     
-    def merge_added_ayat_to_selected(slef, selected_ayat, added_ayat):
-        selected_ayat.extend(added_ayat)
-        
+    def merge_added_ayat_to_topic_ayat(self, topic_ayat, added_ayat):
+        ayat_to_add = []
+        for aya_display in added_ayat:
+            if not self.list_contains_aya(topic_ayat, aya_display):
+                ayat_to_add.append(aya_display)
+        topic_ayat.extend(ayat_to_add)
+    
+    
+    def list_contains_aya(self, ayat_display, aya_display):
+        for list_aya in ayat_display:
+            if self.same_aya(list_aya, aya_display):
+                return True
+        return False
+    
+    
+    def same_aya(self, aya1, aya2):
+        return aya1.sura_number == aya2.sura_number and aya1.aya_number == aya2.aya_number    
     
     def get_sura(self, order):
         return int(self.request.get("sura_" + str(order)))

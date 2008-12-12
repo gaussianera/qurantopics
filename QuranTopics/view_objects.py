@@ -3,5 +3,6 @@ class TopicEditView():
     None
 
 class TopicAya():
-    pass
+    sura_number = int
+    aya_number = int
 
