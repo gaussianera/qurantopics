@@ -22,6 +22,8 @@
      <input name="from_aya" type="text" />
 			  <label> حتى آية  </label>
 	 <input name="to_aya" type="text" />
+     <label> ترتيب </label>
+     <input name="order" type="text" />
 			  <input name="add" type="submit" value="أضف" >
 			  
      <br/>
@@ -34,14 +36,16 @@
 	  
 	  <table>
 	      <tr>
+           <th> ترتيب </th>
 	          <th> سورة </th>
-	          <th> رقم الآية </th>
 	          <th> آية </th>
+	       <th> </th>
 	      </tr>
 	      {% for aya in ayat %}
 	      <tr>
-              <input name="sura_{{ forloop.counter0 }}" value="{{ aya.sura.number }}" type="hidden"/>       
-              <input name="aya_{{ forloop.counter0 }}" value="{{ aya.number }}" type="hidden"/>       
+              <input name="sura_{{ forloop.counter }}" value="{{ aya.sura.number }}" type="hidden"/>       
+              <input name="aya_{{ forloop.counter }}" value="{{ aya.number }}" type="hidden"/>       
+              <td> {{ forloop.counter }} </td>
 	          <td> {{ aya.sura.number }} </td>
 	          <td> {{ aya.number }} </td>
 	          <td> {{ aya.content }} </td>
