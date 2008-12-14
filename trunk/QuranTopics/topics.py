@@ -29,8 +29,10 @@ class CreateNewTopic(webapp.RequestHandler):
             ayat = sura.get_ayat_query_in_range(topics_edit_view.from_aya, topics_edit_view.to_aya)
             added_ayat = self.make_ayat_display_from_ayat(ayat)
             topic_ayat = self.merge_added_ayat_to_topic_ayat(topic_ayat, added_ayat, topics_edit_view.order)
+        elif (self.request.get('remove')):
+            topic_ayat = self.remove_selected(topic_ayat)
         else:
-            logging.info("not in add")
+            logging.info("not handled operation")
 
         ayat = self.make_ayat_from_ayat_display(topic_ayat)
         
@@ -56,6 +58,7 @@ class CreateNewTopic(webapp.RequestHandler):
         ayat_display = []
         while (self.request.get("sura_" + str(count))):
             topic_aya = TopicAya()
+            topic_aya.selected = self.get_selected(count)
             topic_aya.sura_number = self.get_sura(count)
             topic_aya.aya_number = self.get_aya(count)
             ayat_display.append(topic_aya)
@@ -104,6 +107,13 @@ class CreateNewTopic(webapp.RequestHandler):
                 return True
         return False
     
+    def remove_selected(self, topic_ayat):
+        new_set = []
+        for aya_display in topic_ayat:
+            if (not aya_display.selected):
+                new_set.append(aya_display)
+        return new_set
+    
     
     def same_aya(self, aya1, aya2):
         return aya1.sura_number == aya2.sura_number and aya1.aya_number == aya2.aya_number    
@@ -114,6 +124,10 @@ class CreateNewTopic(webapp.RequestHandler):
 
     def get_aya(self, order):
         return self.get_int("aya_" + str(order))
+    
+    
+    def get_selected(self, order):
+        return self.request.get("select_" + str(order)) == "on"
     
     
     def get_int(self, name):
