@@ -36,6 +36,7 @@
 	  
 	  <table>
 	      <tr>
+           <th> </th>
            <th> ترتيب </th>
 	          <th> سورة </th>
 	          <th> آية </th>
@@ -44,7 +45,8 @@
 	      {% for aya in ayat %}
 	      <tr>
               <input name="sura_{{ forloop.counter }}" value="{{ aya.sura.number }}" type="hidden"/>       
-              <input name="aya_{{ forloop.counter }}" value="{{ aya.number }}" type="hidden"/>       
+              <input name="aya_{{ forloop.counter }}" value="{{ aya.number }}" type="hidden"/>
+              <td> <input name="select_{{ forloop.counter }}" type="checkbox" value="on"/> </td>       
               <td> {{ forloop.counter }} </td>
 	          <td> {{ aya.sura.number }} </td>
 	          <td> {{ aya.number }} </td>
