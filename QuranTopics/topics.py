@@ -28,9 +28,11 @@ class CreateNewTopic(webapp.RequestHandler):
             sura = Sura.get_by_number(topics_edit_view.sura)
             ayat = sura.get_ayat_query_in_range(topics_edit_view.from_aya, topics_edit_view.to_aya)
             added_ayat = self.make_ayat_display_from_ayat(ayat)
-            topic_ayat = self.merge_added_ayat_to_topic_ayat(topic_ayat, added_ayat, topics_edit_view.order)
+            topic_ayat = self.merge_added_ayat_to_topic_ayat(topic_ayat, added_ayat, topics_edit_view.position)
         elif (self.request.get('remove')):
             topic_ayat = self.remove_selected(topic_ayat)
+        elif (self.request.get('move_to_position')):
+            topic_ayat = self.move_selected_to_position(topic_ayat, topics_edit_view.to_position)
         else:
             logging.info("not handled operation")
 
@@ -49,7 +51,8 @@ class CreateNewTopic(webapp.RequestHandler):
         topics_edit_view.sura = self.get_int('sura')
         topics_edit_view.from_aya = self.get_int('from_aya')
         topics_edit_view.to_aya = self.get_int('to_aya')
-        topics_edit_view.order = self.get_int('order')
+        topics_edit_view.position = self.get_int('position')
+        topics_edit_view.to_position = self.get_int('to_position')
         self.populate_ayat(topics_edit_view)
         return topics_edit_view
 
@@ -87,15 +90,15 @@ class CreateNewTopic(webapp.RequestHandler):
         return ayat
             
     
-    def merge_added_ayat_to_topic_ayat(self, topic_ayat, added_ayat, order):
+    def merge_added_ayat_to_topic_ayat(self, topic_ayat, added_ayat, position):
         ayat_to_add = []
         for aya_display in added_ayat:
             if not self.list_contains_aya(topic_ayat, aya_display):
                 ayat_to_add.append(aya_display)
         
-        if order >= 1 and order <= len(topic_ayat):
-            order = order - 1
-            topic_ayat = topic_ayat[:order] + ayat_to_add + topic_ayat[order:]
+        if position >= 1 and position <= len(topic_ayat):
+            position = position - 1
+            topic_ayat = topic_ayat[:position] + ayat_to_add + topic_ayat[position:]
         else:
             topic_ayat.extend(ayat_to_add)
         return topic_ayat
@@ -115,8 +118,25 @@ class CreateNewTopic(webapp.RequestHandler):
         return new_set
     
     
+    def move_selected_to_position(self, topic_ayat, to_position):
+        before_position = []
+        selected = []
+        after_position = []
+        count = 1
+        for aya_display in topic_ayat:
+            if aya_display.selected:
+                selected.append(aya_display)
+            elif count < to_position:
+                before_position.append(aya_display)
+            else:
+                after_position.append(aya_display)
+            count += 1
+        return before_position + selected + after_position
+    
+    
     def same_aya(self, aya1, aya2):
-        return aya1.sura_number == aya2.sura_number and aya1.aya_number == aya2.aya_number    
+        return aya1.sura_number == aya2.sura_number and aya1.aya_number == aya2.aya_number
+        
     
     def get_sura(self, order):
         return self.get_int("sura_" + str(order))
