@@ -21,25 +21,28 @@ class CreateNewTopic(webapp.RequestHandler):
 
     def post(self):
 
-        topics_edit_view = self.populate_view()
-        topic_ayat = topics_edit_view.ayat_display
+        topic_edit_view = self.populate_view()
+        topic_ayat = topic_edit_view.ayat_display
 
         if (self.request.get('add')):
-            sura = Sura.get_by_number(topics_edit_view.sura)
-            ayat = sura.get_ayat_query_in_range(topics_edit_view.from_aya, topics_edit_view.to_aya)
+            sura = Sura.get_by_number(topic_edit_view.sura)
+            ayat = sura.get_ayat_query_in_range(topic_edit_view.from_aya, topic_edit_view.to_aya)
             added_ayat = self.make_ayat_display_from_ayat(ayat)
-            topic_ayat = self.merge_added_ayat_to_topic_ayat(topic_ayat, added_ayat, topics_edit_view.position)
+            topic_ayat = self.merge_added_ayat_to_topic_ayat(topic_ayat, added_ayat, topic_edit_view.position)
         elif (self.request.get('remove')):
             topic_ayat = self.remove_selected(topic_ayat)
         elif (self.request.get('move_to_position')):
-            topic_ayat = self.move_selected_to_position(topic_ayat, topics_edit_view.to_position)
+            topic_ayat = self.move_selected_to_position(topic_ayat, topic_edit_view.to_position)
+        elif (self.request.get('save')):
+            ayat = self.make_ayat_from_ayat_display(topic_ayat)
         else:
             logging.info("not handled operation")
 
-        ayat = self.make_ayat_from_ayat_display(topic_ayat)
         
+        topic_edit_view.ayat_display = topic_ayat
+
         template_values = {
-           'ayat': ayat
+           'topic': topic_edit_view
           }
     
         path = os.path.join(os.path.dirname(__file__), 'edit_topic.html')
@@ -47,6 +50,7 @@ class CreateNewTopic(webapp.RequestHandler):
         
     def populate_view(self):
         topics_edit_view = TopicEditView()
+        topics_edit_view.topic_id = self.request.get('topic_id')
         topics_edit_view.title = self.request.get('title')
         topics_edit_view.sura = self.get_int('sura')
         topics_edit_view.from_aya = self.get_int('from_aya')
@@ -64,6 +68,7 @@ class CreateNewTopic(webapp.RequestHandler):
             topic_aya.selected = self.get_selected(count)
             topic_aya.sura_number = self.get_sura(count)
             topic_aya.aya_number = self.get_aya(count)
+            topic_aya.aya_content = self.get_aya_content(count)
             ayat_display.append(topic_aya)
             count = count + 1
         
@@ -76,6 +81,7 @@ class CreateNewTopic(webapp.RequestHandler):
             aya_display = TopicAya()
             aya_display.sura_number = aya.sura.number
             aya_display.aya_number = aya.number
+            aya_display.aya_content = aya.content
             ayat_display.append(aya_display)
         return ayat_display
 
@@ -146,8 +152,12 @@ class CreateNewTopic(webapp.RequestHandler):
         return self.get_int("aya_" + str(order))
     
     
+    def get_aya_content(self, order):
+        return self.request.get("aya_content_" + str(order))
+    
+    
     def get_selected(self, order):
-        return self.request.get("select_" + str(order)) == "on"
+        return self.request.get("selected_" + str(order)) == "on"
     
     
     def get_int(self, name):
