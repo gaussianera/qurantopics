@@ -11,9 +11,11 @@
   </h1>
 
   <form method="post">
+
+     <input name="topic_id" type="hidden" value="{{ topic.topic_id }}" />
   
 			  <label> عنوان الموضوع: </label>
-	 <input name="title" type="text" size="75"/>
+	 <input name="title" type="text" size="75" value="{{ topic.title }}" />
 	 <br/>
 			  
 			  <label> سورة  </label>
@@ -31,6 +33,8 @@
      <br/>
      <input name="move_to_position" type="submit" value="غير الترتيب إلى" >
      <input name="to_position" type="text" />
+     <br/>
+     <input name="save" type="submit" value="احفظ" >
 			  
 	 <br/>
 	  
@@ -42,15 +46,16 @@
 	          <th> آية </th>
 	       <th> </th>
 	      </tr>
-	      {% for aya in ayat %}
+	      {% for aya in topic.ayat_display %}
 	      <tr>
-              <input name="sura_{{ forloop.counter }}" value="{{ aya.sura.number }}" type="hidden"/>       
-              <input name="aya_{{ forloop.counter }}" value="{{ aya.number }}" type="hidden"/>
-              <td> <input name="select_{{ forloop.counter }}" type="checkbox" value="on"/> </td>       
+              <input name="sura_{{ forloop.counter }}" value="{{ aya.sura_number }}" type="hidden"/>       
+              <input name="aya_{{ forloop.counter }}" value="{{ aya.aya_number }}" type="hidden"/>
+              <input name="aya_content_{{ forloop.counter }}" value="{{ aya.aya_content }}" type="hidden"/>
+              <td> <input name="selected_{{ forloop.counter }}" type="checkbox" value="on"/> </td>       
               <td> {{ forloop.counter }} </td>
-	          <td> {{ aya.sura.number }} </td>
-	          <td> {{ aya.number }} </td>
-	          <td> {{ aya.content }} </td>
+	          <td> {{ aya.sura_number }} </td>
+	          <td> {{ aya.aya_number }} </td>
+	          <td> {{ aya.aya_content }} </td>
 	      </tr>
 	      {% endfor %}
 	  </table>
