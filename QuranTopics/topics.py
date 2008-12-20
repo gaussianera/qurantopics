@@ -8,7 +8,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext import db
 from google.appengine.ext.webapp.util import run_wsgi_app
 from view_objects import TopicEditView, TopicAya
-from entities import Sura, Aya
+from entities import Sura, Aya, Topic, TopicAya
 
 class CreateNewTopic(webapp.RequestHandler):
     def get(self):
@@ -34,7 +34,24 @@ class CreateNewTopic(webapp.RequestHandler):
         elif (self.request.get('move_to_position')):
             topic_ayat = self.move_selected_to_position(topic_ayat, topic_edit_view.to_position)
         elif (self.request.get('save')):
-            ayat = self.make_ayat_from_ayat_display(topic_ayat)
+            title = self.request.get('title')
+            if not title:
+                topic_edit_view.error = "لم يتم إدخال عنوان الموضوع"
+            elif not topic_ayat:
+                topic_edit_view.error = "الموضوع لا يتضمن أي آيات"
+            else:
+                if topic_edit_view.topic_id:
+                    logging.debug("topic_edit_view.topic_id = " + str(topic_edit_view.topic_id))
+                    topic = Topic.get_by_id(topic_edit_view.topic_id)
+                else:
+                    topic = Topic()
+                    topic.put()
+                    topic.topic_id = topic.key().id()
+                    topic_edit_view.topic_id = topic.topic_id 
+                topic.title = title
+                topic.put()
+                ayat = self.make_ayat_from_ayat_display(topic_ayat)
+                topic.set_ayat(ayat)
         else:
             logging.info("not handled operation")
 
@@ -50,7 +67,7 @@ class CreateNewTopic(webapp.RequestHandler):
         
     def populate_view(self):
         topics_edit_view = TopicEditView()
-        topics_edit_view.topic_id = self.request.get('topic_id')
+        topics_edit_view.topic_id = self.get_int('topic_id')
         topics_edit_view.title = self.request.get('title')
         topics_edit_view.sura = self.get_int('sura')
         topics_edit_view.from_aya = self.get_int('from_aya')
