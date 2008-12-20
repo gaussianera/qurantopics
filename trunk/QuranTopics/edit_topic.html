@@ -10,9 +10,15 @@
       مواضيع القرآن الكريم
   </h1>
 
+    {% if topic.error %}
+        <div style="color: red; font-weight: bold" > {{ topic.error }}<br/> </div>
+    {% endif %}
+
   <form method="post">
 
-     <input name="topic_id" type="hidden" value="{{ topic.topic_id }}" />
+    {% if topic.topic_id %}
+        <input name="topic_id" type="hidden" value="{{ topic.topic_id }}" />
+    {% endif %}
   
 			  <label> عنوان الموضوع: </label>
 	 <input name="title" type="text" size="75" value="{{ topic.title }}" />
