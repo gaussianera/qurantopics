@@ -45,11 +45,14 @@ class Topic(db.Model):
     def set_ayat(self, ayat):
         self.remove_ayat()
         topic_ayat = []
+        count = 1
         for aya in ayat:
             topic_aya = TopicAya()
             topic_aya.topic = self
+            topic_aya.order = count
             topic_aya.aya = aya
             topic_ayat.append(topic_aya)
+            count += 1
         db.put(topic_ayat)
         
     def remove_ayat(self):
@@ -57,5 +60,6 @@ class Topic(db.Model):
 
 
 class TopicAya(db.Model):
-    topic = db.ReferenceProperty(Topic) 
+    topic = db.ReferenceProperty(Topic)
+    order = db.IntegerProperty()
     aya = db.ReferenceProperty(Aya)
