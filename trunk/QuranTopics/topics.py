@@ -7,10 +7,11 @@ from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext import db
 from google.appengine.ext.webapp.util import run_wsgi_app
-from view_objects import TopicEditView, TopicAya
+from view_objects import TopicEditView, TopicAya, TopicLine
 from entities import Sura, Aya, Topic, TopicAya
+from page_controller import PageController
 
-class CreateNewTopic(webapp.RequestHandler):
+class CreateNewTopic(PageController):
     def get(self):
     
         template_values = {
@@ -177,15 +178,42 @@ class CreateNewTopic(webapp.RequestHandler):
         return self.request.get("selected_" + str(order)) == "on"
     
     
-    def get_int(self, name):
-        value = self.request.get(name)
-        if (value): return int(value)
-        return None
+class ViewTopic(PageController):
 
+    def get(self):
+        topic_id = self.get_int("topic_id")
+        topic = Topic.get_by_id(topic_id)
+        topic_lines = self.make_topic_lines(topic.get_ayat())
+    
+        template_values = {
+           'title' : topic.title,
+           'lines' : topic_lines
+          }
+    
+        path = os.path.join(os.path.dirname(__file__), 'view_topic.html')
+        self.response.out.write(template.render(path, template_values))
+    
+    
+    def post(self):
+        if (self.request.get('delete')):
+            pass
+
+    
+    def make_topic_lines(self, ayat):
+        topic_lines = []
+        for aya in ayat:
+            topic_line = TopicLine()
+            topic_line.sura_number = aya.sura.number
+            topic_line.aya_number = aya.number
+            topic_line.aya_content = aya.content
+            topic_lines.append(topic_line)
+        return topic_lines
+    
 
 
 application = webapp.WSGIApplication(
-                                     [('/topics/add_edit', CreateNewTopic)],
+                                     [('/topics/add_edit', CreateNewTopic),
+                                      ('/topics/view', ViewTopic)],
                                      debug=True)
 
 def main():
