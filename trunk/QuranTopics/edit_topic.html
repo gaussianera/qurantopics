@@ -1,72 +1,65 @@
-﻿<html>
-  <head>
-      <title> إضافة أو تعديل موضوع </title>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-  </head>
-  
-  <body dir="rtl">
-  
-  <h1>
-      مواضيع القرآن الكريم
-  </h1>
+﻿{% extends "base.html" %}
 
-    {% if topic.error %}
-        <div style="color: red; font-weight: bold" > {{ topic.error }}<br/> </div>
-    {% endif %}
+{% block title %} إضافة أو تعديل موضوع {% endblock %}
 
-  <form method="post">
+{% block content %}
+
+{% if topic.error %}
+    <div style="color: red; font-weight: bold" > {{ topic.error }}<br/> </div>
+{% endif %}
+
+<form method="post">
 
     {% if topic.topic_id %}
         <input name="topic_id" type="hidden" value="{{ topic.topic_id }}" />
     {% endif %}
-  
-			  <label> عنوان الموضوع: </label>
-	 <input name="title" type="text" size="75" value="{{ topic.title }}" />
-	 <br/>
-			  
-			  <label> سورة  </label>
-     <input name="sura" type="text" />
-			  <label> من آيه  </label>
-     <input name="from_aya" type="text" />
-			  <label> حتى آية  </label>
-	 <input name="to_aya" type="text" />
-     <label> ترتيب </label>
-     <input name="position" type="text" />
-			  <input name="add" type="submit" value="أضف" >
-			  
-     <br/>
-			  <input name="remove" type="submit" value="احذف" >
-     <br/>
-     <input name="move_to_position" type="submit" value="غير الترتيب إلى" >
-     <input name="to_position" type="text" />
-     <br/>
-     <input name="save" type="submit" value="احفظ" >
-			  
-	 <br/>
-	  
-	  <table>
-	      <tr>
-           <th> </th>
-           <th> ترتيب </th>
-	          <th> سورة </th>
-	          <th> آية </th>
-	       <th> </th>
-	      </tr>
-	      {% for aya in topic.ayat_display %}
-	      <tr>
-              <input name="sura_{{ forloop.counter }}" value="{{ aya.sura_number }}" type="hidden"/>       
-              <input name="aya_{{ forloop.counter }}" value="{{ aya.aya_number }}" type="hidden"/>
-              <input name="aya_content_{{ forloop.counter }}" value="{{ aya.aya_content }}" type="hidden"/>
-              <td> <input name="selected_{{ forloop.counter }}" type="checkbox" value="on"/> </td>       
-              <td> {{ forloop.counter }} </td>
-	          <td> {{ aya.sura_number }} </td>
-	          <td> {{ aya.aya_number }} </td>
-	          <td> {{ aya.aya_content }} </td>
-	      </tr>
-	      {% endfor %}
-	  </table>
+    
+		  <label> عنوان الموضوع: </label>
+    <input name="title" type="text" size="75" value="{{ topic.title }}" />
+    <br/>
+    		  
+		  <label> سورة  </label>
+    <input name="sura" type="text" />
+		  <label> من آيه  </label>
+    <input name="from_aya" type="text" />
+		  <label> حتى آية  </label>
+    <input name="to_aya" type="text" />
+    <label> ترتيب </label>
+    <input name="position" type="text" />
+		  <input name="add" type="submit" value="أضف" >
+    		  
+    <br/>
+    		  <input name="remove" type="submit" value="احذف" >
+    <br/>
+    <input name="move_to_position" type="submit" value="غير الترتيب إلى" >
+    <input name="to_position" type="text" />
+    <br/>
+    <input name="save" type="submit" value="احفظ" >
+    		  
+    <br/>
       
-  </form>
+    <table>
+        <tr>
+            <th> </th>
+            <th> ترتيب </th>
+            <th> سورة </th>
+            <th> آية </th>
+            <th> </th>
+        </tr>
+        {% for aya in topic.ayat_display %}
+        <tr>
+            <input name="sura_{{ forloop.counter }}" value="{{ aya.sura_number }}" type="hidden"/>       
+            <input name="aya_{{ forloop.counter }}" value="{{ aya.aya_number }}" type="hidden"/>
+            <input name="aya_content_{{ forloop.counter }}" value="{{ aya.aya_content }}" type="hidden"/>
+            <td> <input name="selected_{{ forloop.counter }}" type="checkbox" value="on"/> </td>       
+            <td> {{ forloop.counter }} </td>
+            <td> {{ aya.sura_number }} </td>
+            <td> {{ aya.aya_number }} </td>
+            <td> {{ aya.aya_content }} </td>
+        </tr>
+        {% endfor %}
+    </table>
+  
+</form>
 
-  </body>
-</html>
+{% endblock %}
