@@ -6,19 +6,21 @@ from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext import db
 from google.appengine.ext.webapp.util import run_wsgi_app
-from entities import Sura
+from entities import Sura, Topic
 
 
 
 
 class MainPage(webapp.RequestHandler):
-  def get(self):
-
-    template_values = {
-      }
-
-    path = os.path.join(os.path.dirname(__file__), 'index.html')
-    self.response.out.write(template.render(path, template_values))
+    def get(self):
+        topics = Topic.all()
+        
+        template_values = {
+           'topics' : topics
+         }
+    
+        path = os.path.join(os.path.dirname(__file__), 'index.html')
+        self.response.out.write(template.render(path, template_values))
 
 
 class SurasListPage(webapp.RequestHandler):
