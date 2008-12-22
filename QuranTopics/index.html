@@ -1,57 +1,9 @@
-﻿<html>
-  <head>
-    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
-  </head>
-  
-  <body dir="rtl">
-  
-  <h1>
-      مواضيع القرآن الكريم
-  </h1>
-  
-  <a href="/list_suras"> سور القرآن </a>
-  <br>
-  <a href="/topics/add_edit"> أضف موضوعاً </a>
-  <br>
-  <h2> الفاتحة </h2>
-  
-      <table border="0">
-              <tr>
-                  <td>
-بِسْمِ اللّهِ الرَّحْمـَنِ الرَّحِيمِ
-                  </td>
-              </tr>
-              <tr>
-                  <td>
-الْحَمْدُ للّهِ رَبِّ الْعَالَمِينَ
-                  </td>
-              </tr>
-              <tr>
-                  <td>
-الرَّحْمـنِ الرَّحِيمِ
-                  </td>
-              </tr>
-              <tr>
-                  <td>
-مَـالِكِ يَوْمِ الدِّينِ
-                  </td>
-              </tr>
-              <tr>
-                  <td>
-إِيَّاكَ نَعْبُدُ وإِيَّاكَ نَسْتَعِينُ
-                  </td>
-              </tr>
-              <tr>
-                  <td>
-اهدِنَــــا الصِّرَاطَ المُستَقِيمَ
-                  </td>
-              </tr>
-              <tr>
-                  <td>
-صِرَاطَ الَّذِينَ أَنعَمتَ عَلَيهِمْ غَيرِ المَغضُوبِ عَلَيهِمْ وَلاَ الضَّالِّينَ
-                  </td>
-              </tr>
-      </table>
+﻿{% extends "base.html" %}
 
-  </body>
-</html>
+{% block content %}
+
+<a href="/list_suras"> سور القرآن </a>
+<br>
+<a href="/topics/add_edit"> أضف موضوعاً </a>
+
+{% endblock %}
