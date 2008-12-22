@@ -57,6 +57,11 @@ class Topic(db.Model):
         
     def remove_ayat(self):
         db.delete(self.topicaya_set)
+    
+    def get_ayat(self):
+        topic_ayat = self.topicaya_set
+        topic_ayat.order('order')
+        return [ topic_aya.aya for topic_aya in topic_ayat ]
 
 
 class TopicAya(db.Model):

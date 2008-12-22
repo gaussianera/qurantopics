@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %} {{ title }} {% endblock %}
+
+{% block content %}
+
+<h2> {{ title }} </h2>
+
+<table>
+<tr>
+    <th> سورة </th>
+    <th> آية </th>
+    <th> </th>
+</tr>
+{% for line in lines %}
+<tr>
+    <td> {{ line.sura_number }} </td>
+    <td> {{ line.aya_number }} </td>
+    <td> {{ line.aya_content }} </td>
+</tr>
+{% endfor %}
+</table>
+
+
+
+{% endblock %}
