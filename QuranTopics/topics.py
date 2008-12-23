@@ -1,5 +1,6 @@
-import cgi
+# coding: utf8
 
+import cgi
 import os
 import logging
 from google.appengine.ext.webapp import template
