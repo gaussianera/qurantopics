@@ -14,11 +14,16 @@
 </tr>
 {% for line in lines %}
 <tr>
-    <td> {{ line.sura_number }} </td>
-    <td> {{ line.aya_number }} </td>
-    <td> {{ line.aya_content }} </td>
+    {% if line.separator %}
+        <td colspan="3"> <hr/> </td>
+    {% else %}
+        <td> {{ line.sura_number }} </td>
+        <td> {{ line.aya_number }} </td>
+        <td> {{ line.aya_content }} </td>
+    {% endif %}
 </tr>
 {% endfor %}
+<td colspan="3"> <hr/> </td>
 </table>
 
 <form method="post">
