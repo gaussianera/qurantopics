@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
-{% block title %} {{ title }} {% endblock %}
+{% block title %} {{ topic.title }} {% endblock %}
 
 {% block content %}
 
-<h2> {{ title }} </h2>
+<h2> {{ topic.title }} </h2>
 
 <table>
 <tr>
@@ -21,6 +21,9 @@
 {% endfor %}
 </table>
 
-
+<form method="post">
+    <input name="topic_id" type="hidden" value="{{ topic.topic_id }}" />
+    <input name="delete" type="submit" value="احذف الموضوع" >
+</form>
 
 {% endblock %}

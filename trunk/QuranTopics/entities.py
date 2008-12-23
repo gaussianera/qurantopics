@@ -42,6 +42,13 @@ class Topic(db.Model):
         return Topic.gql("WHERE topic_id = :id ", id = topic_id).fetch(1)[0]
 
     
+    @staticmethod
+    def remove_by_id(topic_id):
+        topic = Topic.get_by_id(topic_id)
+        topic.remove_ayat()
+        db.delete(topic)
+
+
     def set_ayat(self, ayat):
         self.remove_ayat()
         topic_ayat = []

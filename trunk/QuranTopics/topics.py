@@ -186,7 +186,7 @@ class ViewTopic(PageController):
         topic_lines = self.make_topic_lines(topic.get_ayat())
     
         template_values = {
-           'title' : topic.title,
+           'topic' : topic,
            'lines' : topic_lines
           }
     
@@ -196,7 +196,9 @@ class ViewTopic(PageController):
     
     def post(self):
         if (self.request.get('delete')):
-            pass
+            topic_id = self.get_int('topic_id')
+            Topic.remove_by_id(topic_id)
+            self.redirect("/")
 
     
     def make_topic_lines(self, ayat):
