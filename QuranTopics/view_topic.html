@@ -6,6 +6,11 @@
 
 <h2> {{ topic.title }} </h2>
 
+<form method="post" action="/topics/add_edit">
+    <input name="topic_id" type="hidden" value="{{ topic.topic_id }}" />
+    <input name="edit" type="submit" value="عدل الموضوع" >
+</form>
+
 <table>
 <tr>
     <th> سورة </th>

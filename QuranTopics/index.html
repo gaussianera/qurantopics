@@ -2,15 +2,16 @@
 
 {% block content %}
 
-<a href="/list_suras"> سور القرآن </a>
+<a href="/list_suras"> تصفح القرآن </a>
 <br>
 <a href="/topics/add_edit"> أضف موضوعاً </a>
 <br>
-<h3> المواضيع: </h3>
-<br>
+<h3> المواضيع </h3>
 
+<ul>
 {% for topic in topics %}
     <li> <a href="/topics/view?topic_id={{ topic.topic_id }}"> {{ topic.title }} </a> </li>
 {% endfor %}
+</ul>
 
 {% endblock %}

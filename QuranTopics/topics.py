@@ -13,6 +13,7 @@ from entities import Sura, Aya, Topic, TopicAya
 from page_controller import PageController
 
 class CreateNewTopic(PageController):
+
     def get(self):
     
         template_values = {
@@ -30,35 +31,17 @@ class CreateNewTopic(PageController):
             sura = Sura.get_by_number(topic_edit_view.sura)
             ayat = sura.get_ayat_query_in_range(topic_edit_view.from_aya, topic_edit_view.to_aya)
             added_ayat = self.make_ayat_display_from_ayat(ayat)
-            topic_ayat = self.merge_added_ayat_to_topic_ayat(topic_ayat, added_ayat, topic_edit_view.position)
+            topic_edit_view.ayat_display = self.merge_added_ayat_to_topic_ayat(topic_ayat, added_ayat, topic_edit_view.position)
+        elif (self.request.get('edit')):
+            self.edit_topic(topic_edit_view)
         elif (self.request.get('remove')):
-            topic_ayat = self.remove_selected(topic_ayat)
+            topic_edit_view.ayat_display = self.remove_selected(topic_ayat)
         elif (self.request.get('move_to_position')):
-            topic_ayat = self.move_selected_to_position(topic_ayat, topic_edit_view.to_position)
+            topic_edit_view.ayat_display = self.move_selected_to_position(topic_ayat, topic_edit_view.to_position)
         elif (self.request.get('save')):
-            title = self.request.get('title')
-            if not title:
-                topic_edit_view.error = "لم يتم إدخال عنوان الموضوع"
-            elif not topic_ayat:
-                topic_edit_view.error = "الموضوع لا يتضمن أي آيات"
-            else:
-                if topic_edit_view.topic_id:
-                    logging.debug("topic_edit_view.topic_id = " + str(topic_edit_view.topic_id))
-                    topic = Topic.get_by_id(topic_edit_view.topic_id)
-                else:
-                    topic = Topic()
-                    topic.put()
-                    topic.topic_id = topic.key().id()
-                    topic_edit_view.topic_id = topic.topic_id 
-                topic.title = title
-                topic.put()
-                ayat = self.make_ayat_from_ayat_display(topic_ayat)
-                topic.set_ayat(ayat)
+            self.save_topic(topic_edit_view)
         else:
-            logging.info("not handled operation")
-
-        
-        topic_edit_view.ayat_display = topic_ayat
+            logging.info("operation not handled")
 
         template_values = {
            'topic': topic_edit_view
@@ -67,6 +50,35 @@ class CreateNewTopic(PageController):
         path = os.path.join(os.path.dirname(__file__), 'edit_topic.html')
         self.response.out.write(template.render(path, template_values))
         
+    def save_topic(self, topic_edit_view):
+        title = self.request.get('title')
+        if not title:
+            topic_edit_view.error = "لم يتم إدخال عنوان الموضوع"
+        elif not topic_edit_view.ayat_display:
+            topic_edit_view.error = "الموضوع لا يتضمن أي آيات"
+        else:
+            if topic_edit_view.topic_id:
+                logging.debug("topic_edit_view.topic_id = " + str(topic_edit_view.topic_id))
+                topic = Topic.get_by_id(topic_edit_view.topic_id)
+            else:
+                topic = Topic()
+                topic.put()
+                topic.topic_id = topic.key().id()
+                topic_edit_view.topic_id = topic.topic_id 
+            topic.title = title
+            topic.put()
+            ayat = self.make_ayat_from_ayat_display(topic_edit_view.ayat_display)
+            topic.set_ayat(ayat)
+
+    
+    def edit_topic(self, topic_edit_view):
+        topic_id = self.get_int('topic_id')
+        topic = Topic.get_by_id(topic_edit_view.topic_id)
+        topic_edit_view.topic_id = topic_id
+        topic_edit_view.title = topic.title
+        topic_edit_view.ayat_display = self.make_ayat_display_from_ayat(topic.get_ayat())
+        
+
     def populate_view(self):
         topics_edit_view = TopicEditView()
         topics_edit_view.topic_id = self.get_int('topic_id')
