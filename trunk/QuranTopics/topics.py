@@ -203,11 +203,18 @@ class ViewTopic(PageController):
     
     def make_topic_lines(self, ayat):
         topic_lines = []
+        prev_sura = -1
+        prev_aya = -1
         for aya in ayat:
             topic_line = TopicLine()
-            topic_line.sura_number = aya.sura.number
-            topic_line.aya_number = aya.number
-            topic_line.aya_content = aya.content
+            if aya.sura.number == prev_sura and aya.number == prev_aya + 1: 
+                topic_line.sura_number = aya.sura.number
+                topic_line.aya_number = aya.number
+                topic_line.aya_content = aya.content
+            else:
+                topic_line.separator = True
+            prev_sura = aya.sura.number
+            prev_aya = aya.number
             topic_lines.append(topic_line)
         return topic_lines
     
