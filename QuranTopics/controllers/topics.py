@@ -8,9 +8,9 @@ from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext import db
 from google.appengine.ext.webapp.util import run_wsgi_app
-from view_objects import TopicEditView, TopicAya, TopicLine
-from entities import Sura, Aya, Topic, TopicAya
-from page_controller import PageController
+from controllers.view_objects import TopicEditView, TopicAya, TopicLine
+from controllers.entities import Sura, Aya, Topic, TopicAya
+from controllers.page_controller import PageController
 
 class CreateNewTopic(PageController):
 
@@ -19,7 +19,7 @@ class CreateNewTopic(PageController):
         template_values = {
           }
     
-        path = os.path.join(os.path.dirname(__file__), 'edit_topic.html')
+        path = self.get_view_path('edit_topic.html')
         self.response.out.write(template.render(path, template_values))
 
     def post(self):
@@ -47,7 +47,7 @@ class CreateNewTopic(PageController):
            'topic': topic_edit_view
           }
     
-        path = os.path.join(os.path.dirname(__file__), 'edit_topic.html')
+        path = self.get_view_path('edit_topic.html')
         self.response.out.write(template.render(path, template_values))
         
     def save_topic(self, topic_edit_view):
@@ -203,7 +203,7 @@ class ViewTopic(PageController):
            'lines' : topic_lines
           }
     
-        path = os.path.join(os.path.dirname(__file__), 'view_topic.html')
+        path = self.get_view_path('view_topic.html')
         self.response.out.write(template.render(path, template_values))
     
     

@@ -6,24 +6,25 @@ from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext import db
 from google.appengine.ext.webapp.util import run_wsgi_app
-from entities import Sura, Topic
+from controllers.entities import Sura, Topic
+from controllers.page_controller import PageController
 
 
 
 
-class MainPage(webapp.RequestHandler):
+class MainPage(PageController):
     def get(self):
         topics = Topic.all()
         
         template_values = {
            'topics' : topics
          }
-    
-        path = os.path.join(os.path.dirname(__file__), 'index.html')
+
+        path = self.get_view_path('index.html')
         self.response.out.write(template.render(path, template_values))
 
 
-class SurasListPage(webapp.RequestHandler):
+class SurasListPage(PageController):
   def get(self):
 
     suras = Sura.gql("order by number").fetch(114)
@@ -32,11 +33,11 @@ class SurasListPage(webapp.RequestHandler):
       'suras': suras
       }
 
-    path = os.path.join(os.path.dirname(__file__), 'suras_list.html')
+    path = self.get_view_path('suras_list.html')
     self.response.out.write(template.render(path, template_values))
 
 
-class SurasDisplayPage(webapp.RequestHandler):
+class SurasDisplayPage(PageController):
   def get(self):
 
     sura_number = self.request.get('sura')
@@ -49,7 +50,7 @@ class SurasDisplayPage(webapp.RequestHandler):
       'ayat': ayat
       }
 
-    path = os.path.join(os.path.dirname(__file__), 'sura_display.html')
+    path = self.get_view_path('sura_display.html')
     self.response.out.write(template.render(path, template_values))
 
 

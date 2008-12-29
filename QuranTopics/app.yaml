@@ -8,13 +8,13 @@ handlers:
   static_dir: stylesheets
 
 - url: /load/.*
-  script: data_loader.py
+  script: controllers/data_loader.py
 
 - url: /load_all/.*
-  script: data_loader_one_step.py
+  script: controllers/data_loader_one_step.py
 
 - url: /topics/.*
-  script: topics.py
+  script: controllers/topics.py
 
 - url: /.*
-  script: qurantopics.py
+  script: controllers/qurantopics.py
