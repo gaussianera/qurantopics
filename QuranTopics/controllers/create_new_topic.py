@@ -10,16 +10,11 @@ from controllers.page_controller import PageController
 
 class CreateNewTopic(PageController):
 
-    def get(self):
+    def perform_get(self):
+        return 'edit_topic.html'
     
-        template_values = {
-          }
-    
-        path = self.get_view_path('edit_topic.html')
-        self.response.out.write(template.render(path, template_values))
 
-    def post(self):
-
+    def perform_post(self):
         topic_edit_view = self.populate_view()
         topic_ayat = topic_edit_view.ayat_display
 
@@ -39,12 +34,10 @@ class CreateNewTopic(PageController):
         else:
             logging.info("operation not handled")
 
-        template_values = {
-           'topic': topic_edit_view
-          }
+        self.template_values['topic'] = topic_edit_view
     
-        path = self.get_view_path('edit_topic.html')
-        self.response.out.write(template.render(path, template_values))
+        return 'edit_topic.html'
+    
         
     def save_topic(self, topic_edit_view):
         title = self.request.get('title')

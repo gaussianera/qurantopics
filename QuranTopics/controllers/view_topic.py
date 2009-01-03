@@ -8,18 +8,15 @@ from controllers.page_controller import PageController
 
 class ViewTopic(PageController):
 
-    def get(self):
+    def perform_get(self):
         topic_id = self.get_int("topic_id")
         topic = Topic.get_by_id(topic_id)
         topic_lines = self.make_topic_lines(topic.get_ayat())
     
-        template_values = {
-           'topic' : topic,
-           'lines' : topic_lines
-          }
+        self.template_values['topic'] = topic
+        self.template_values['lines'] = topic_lines
     
-        path = self.get_view_path('view_topic.html')
-        self.response.out.write(template.render(path, template_values))
+        return 'view_topic.html'
     
     
     def post(self):
