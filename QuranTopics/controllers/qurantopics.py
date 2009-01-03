@@ -47,7 +47,7 @@ class Login(PageController):
 class Logout(PageController):
     def get(self):
         user = users.get_current_user()
-        self.redirect(users.create_logout_url(self.request.uri))
+        self.redirect(users.create_logout_url('/'))
 
 
 application = webapp.WSGIApplication(
