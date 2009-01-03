@@ -1,7 +1,6 @@
 import cgi
 
 import os
-from google.appengine.ext.webapp import template
 from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext import db
@@ -13,53 +12,50 @@ from controllers.page_controller import PageController
 
 
 class MainPage(PageController):
-    def get(self):
+    def perform_get(self):
         topics = Topic.all()
-        
-        template_values = {
-           'topics' : topics
-         }
-
-        path = self.get_view_path('index.html')
-        self.response.out.write(template.render(path, template_values))
+        self.template_values['topics'] = topics
+        return 'index.html'
 
 
 class SurasListPage(PageController):
-  def get(self):
-
-    suras = Sura.gql("order by number").fetch(114)
-
-    template_values = {
-      'suras': suras
-      }
-
-    path = self.get_view_path('suras_list.html')
-    self.response.out.write(template.render(path, template_values))
+    def perform_get(self):
+        suras = Sura.gql("order by number").fetch(114)
+        self.template_values['suras'] = suras
+        return 'suras_list.html'
 
 
 class SurasDisplayPage(PageController):
-  def get(self):
+    def perform_get(self):
+        sura_number = self.request.get('sura')
+        sura = Sura.gql("WHERE number = :number ", number = int(sura_number)).fetch(1)[0]
+        ayat = sura.aya_set
+        ayat.order('number')
 
-    sura_number = self.request.get('sura')
-    sura = Sura.gql("WHERE number = :number ", number = int(sura_number)).fetch(1)[0]
-    ayat = sura.aya_set
-    ayat.order('number')
+        self.template_values['sura'] = sura
+        self.template_values['ayat'] = ayat
 
-    template_values = {
-      'sura': sura,
-      'ayat': ayat
-      }
-
-    path = self.get_view_path('sura_display.html')
-    self.response.out.write(template.render(path, template_values))
+        return 'sura_display.html'
 
 
+class Login(PageController):
+    def get(self):
+        user = users.get_current_user()
+        self.redirect(users.create_login_url(self.request.uri))
+
+
+class Logout(PageController):
+    def get(self):
+        user = users.get_current_user()
+        self.redirect(users.create_logout_url(self.request.uri))
 
 
 application = webapp.WSGIApplication(
                                      [('/', MainPage),
                                       ('/list_suras', SurasListPage),
-                                      ('/display_sura', SurasDisplayPage)],
+                                      ('/display_sura', SurasDisplayPage),
+                                      ('/login', Login),
+                                      ('/logout', Logout)],
                                      debug=True)
 
 def main():
