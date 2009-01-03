@@ -18,19 +18,14 @@
             </h1>
         </div>
         <div style="float: left;">
-            <table>
-            <tr>
-                <td>
-                    <a href="/login"> سجل الدخول </a>
-                </td>
-                <td>
-                |
-                </td>
-                <td>
-                    <a href="/logout"> خروج </a>
-                </td>
-            </tr>
-            </table>
+            {{ user_nickname }}
+            <a href="{{ user_link }}">
+                {% if user_nickname %}
+                خروج
+                {% else %}
+                 سجل الدخول 
+                {% endif %}
+            </a>
         </div>
         
         <div style="float: none; clear: both">
