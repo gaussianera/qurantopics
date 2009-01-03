@@ -1,19 +1,20 @@
-<html>
+{% extends "base.html" %}
 
-    <body dir="rtl">
-	  <h1>
-	      سورة {{ sura.name }}
-	  </h1>
+{% block title %} سورة {{ sura.name }} {% endblock %}
 
-        <table border="0">
-	    {% for aya in ayat %}
-	    	<tr>
-	    		<td> {{ aya.number }}. </td>
-	    		<td> {{ aya.content }} </td>
-	    	</tr>
-	    {% endfor %}
-	    </table>
+{% block content %}
+
+<h1>
+  سورة {{ sura.name }}
+</h1>
+
+<table border="0">
+{% for aya in ayat %}
+	<tr>
+		<td valign="top"> ({{ aya.number }}) </td>
+		<td> {{ aya.content }} </td>
+	</tr>
+{% endfor %}
+</table>
     
-    </body>
-
-</html>
+{% endblock %}
