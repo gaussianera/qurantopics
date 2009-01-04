@@ -1,7 +1,7 @@
 
 from google.appengine.ext.webapp import template
 from google.appengine.ext import db
-from controllers.view_objects import TopicEditView, TopicAya, TopicLine
+from controllers.view_objects import TopicEditView, TopicAyaView, TopicLine
 from controllers.entities import Sura, Aya, Topic, TopicAya
 from controllers.page_controller import PageController
 
@@ -19,11 +19,13 @@ class ViewTopic(PageController):
         return 'view_topic.html'
     
     
-    def post(self):
+    def perform_post(self):
         if (self.request.get('delete')):
             topic_id = self.get_int('topic_id')
-            Topic.remove_by_id(topic_id)
-            self.redirect("/")
+            topic = Topic.get_by_id(topic_id)
+            self.require_user(topic.created_by)
+            Topic.delete(topic)
+            return "index.html"
 
     
     def make_topic_lines(self, ayat):

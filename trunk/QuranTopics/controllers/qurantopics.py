@@ -38,24 +38,10 @@ class SurasDisplayPage(PageController):
         return 'sura_display.html'
 
 
-class Login(PageController):
-    def get(self):
-        user = users.get_current_user()
-        self.redirect(users.create_login_url(self.request.uri))
-
-
-class Logout(PageController):
-    def get(self):
-        user = users.get_current_user()
-        self.redirect(users.create_logout_url('/'))
-
-
 application = webapp.WSGIApplication(
                                      [('/', MainPage),
                                       ('/list_suras', SurasListPage),
-                                      ('/display_sura', SurasDisplayPage),
-                                      ('/login', Login),
-                                      ('/logout', Logout)],
+                                      ('/display_sura', SurasDisplayPage)],
                                      debug=True)
 
 def main():

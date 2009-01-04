@@ -2,7 +2,7 @@
 class TopicEditView():
     None
 
-class TopicAya():
+class TopicAyaView():
     error = unicode
     selected = bool
     sura_number = int

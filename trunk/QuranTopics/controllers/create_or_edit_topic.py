@@ -3,18 +3,20 @@
 import logging
 from google.appengine.ext.webapp import template
 from google.appengine.ext import db
-from controllers.view_objects import TopicEditView, TopicAya, TopicLine
-from controllers.entities import Sura, Aya, Topic, TopicAya
+from controllers.view_objects import TopicEditView, TopicAyaView, TopicLine
+from controllers.entities import Sura, Aya, Topic
 from controllers.page_controller import PageController
 
 
-class CreateNewTopic(PageController):
+class CreateOrEditTopic(PageController):
 
     def perform_get(self):
+        self.require_login()
         return 'edit_topic.html'
     
 
     def perform_post(self):
+        self.require_login()
         topic_edit_view = self.populate_view()
         topic_ayat = topic_edit_view.ayat_display
 
@@ -49,8 +51,10 @@ class CreateNewTopic(PageController):
             if topic_edit_view.topic_id:
                 logging.debug("topic_edit_view.topic_id = " + str(topic_edit_view.topic_id))
                 topic = Topic.get_by_id(topic_edit_view.topic_id)
+                self.require_user(topic.created_by)
             else:
                 topic = Topic()
+                topic.created_by = self.user
                 topic.put()
                 topic.topic_id = topic.key().id()
                 topic_edit_view.topic_id = topic.topic_id 
@@ -63,6 +67,7 @@ class CreateNewTopic(PageController):
     def edit_topic(self, topic_edit_view):
         topic_id = self.get_int('topic_id')
         topic = Topic.get_by_id(topic_edit_view.topic_id)
+        self.require_user(topic.created_by)
         topic_edit_view.topic_id = topic_id
         topic_edit_view.title = topic.title
         topic_edit_view.ayat_display = self.make_ayat_display_from_ayat(topic.get_ayat())
@@ -84,7 +89,7 @@ class CreateNewTopic(PageController):
         count = 1
         ayat_display = []
         while (self.request.get("sura_" + str(count))):
-            topic_aya = TopicAya()
+            topic_aya = TopicAyaView()
             topic_aya.selected = self.get_selected(count)
             topic_aya.sura_number = self.get_sura(count)
             topic_aya.aya_number = self.get_aya(count)
@@ -98,7 +103,7 @@ class CreateNewTopic(PageController):
     def make_ayat_display_from_ayat(self, ayat):
         ayat_display = []
         for aya in ayat:
-            aya_display = TopicAya()
+            aya_display = TopicAyaView()
             aya_display.sura_number = aya.sura.number
             aya_display.aya_number = aya.number
             aya_display.aya_content = aya.content

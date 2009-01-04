@@ -2,12 +2,12 @@
 import logging
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
-from controllers.create_new_topic import CreateNewTopic
+from controllers.create_or_edit_topic import CreateOrEditTopic
 from controllers.view_topic import ViewTopic
 
         
 application = webapp.WSGIApplication(
-                                     [('/topics/add_edit', CreateNewTopic),
+                                     [('/topics/add_edit', CreateOrEditTopic),
                                       ('/topics/view', ViewTopic)],
                                      debug=True)
 

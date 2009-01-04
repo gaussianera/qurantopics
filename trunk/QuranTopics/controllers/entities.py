@@ -34,8 +34,11 @@ class Aya(db.Model):
 
 
 class Topic(db.Model):
+
     topic_id = db.IntegerProperty()
     title = db.StringProperty()
+    created_by = db.UserProperty()
+
     
     @staticmethod
     def get_by_id(topic_id):
@@ -45,6 +48,11 @@ class Topic(db.Model):
     @staticmethod
     def remove_by_id(topic_id):
         topic = Topic.get_by_id(topic_id)
+        Topic.delete(topic)
+
+
+    @staticmethod
+    def delete(topic):
         topic.remove_ayat()
         db.delete(topic)
 
