@@ -9,12 +9,18 @@ handlers:
 
 - url: /load/.*
   script: controllers/data_loader.py
+  login: admin
 
 - url: /load_all/.*
   script: controllers/data_loader_one_step.py
-
+  login: admin
+ 
 - url: /topics/.*
   script: controllers/topics.py
+
+- url: /admin/.*
+  script: controllers/admin.py
+  login: admin
 
 - url: /.*
   script: controllers/qurantopics.py
