@@ -60,8 +60,8 @@ class CreateOrEditTopic(PageController):
                 topic_edit_view.topic_id = topic.topic_id 
             topic.title = title
             topic.put()
-            ayat = self.make_ayat_from_ayat_display(topic_edit_view.ayat_display)
-            topic.set_ayat(ayat)
+            ayat_keys = self.make_ayat_keys_from_ayat_display(topic_edit_view.ayat_display)
+            topic.set_ayat(ayat_keys)
 
     
     def edit_topic(self, topic_edit_view):
@@ -79,7 +79,10 @@ class CreateOrEditTopic(PageController):
         topics_edit_view.title = self.request.get('title')
         topics_edit_view.sura = self.get_int('sura')
         topics_edit_view.from_aya = self.get_int('from_aya')
-        topics_edit_view.to_aya = self.get_int('to_aya')
+        to_aya = self.get_int('to_aya')
+        if not to_aya:
+            to_aya = topics_edit_view.from_aya
+        topics_edit_view.to_aya = to_aya
         topics_edit_view.position = self.get_int('position')
         topics_edit_view.to_position = self.get_int('to_position')
         self.populate_ayat(topics_edit_view)
@@ -89,12 +92,14 @@ class CreateOrEditTopic(PageController):
         count = 1
         ayat_display = []
         while (self.request.get("sura_" + str(count))):
-            topic_aya = TopicAyaView()
-            topic_aya.selected = self.get_selected(count)
-            topic_aya.sura_number = self.get_sura(count)
-            topic_aya.aya_number = self.get_aya(count)
-            topic_aya.aya_content = self.get_aya_content(count)
-            ayat_display.append(topic_aya)
+            aya_display = TopicAyaView()
+            aya_display.selected = self.get_selected(count)
+            aya_display.sura_number = self.get_sura(count)
+            aya_display.sura_name = self.get_sura_name(count)
+            aya_display.aya_number = self.get_aya(count)
+            aya_display.aya_content = self.get_aya_content(count)
+            aya_display.aya_key = self.get_aya_key(count)
+            ayat_display.append(aya_display)
             count = count + 1
         
         topics_edit_view.ayat_display = ayat_display
@@ -105,20 +110,22 @@ class CreateOrEditTopic(PageController):
         for aya in ayat:
             aya_display = TopicAyaView()
             aya_display.sura_number = aya.sura.number
+            aya_display.sura_name = aya.sura.name
             aya_display.aya_number = aya.number
             aya_display.aya_content = aya.content
+            aya_display.aya_key = str(aya.key())
             ayat_display.append(aya_display)
         return ayat_display
 
             
-    def make_ayat_from_ayat_display(self, ayat_display):
+    def make_ayat_keys_from_ayat_display(self, ayat_display):
         logging.debug("start: make_ayat_from_ayat_display")    
-        ayat = []
+        ayat_keys = []
         for aya_display in ayat_display:
-            aya = Aya.get_by_sura_and_aya_number(aya_display.sura_number, aya_display.aya_number)
-            ayat.append(aya)
+            aya_key = db.Key(aya_display.aya_key)
+            ayat_keys.append(aya_key)
         logging.debug("end: make_ayat_from_ayat_display")    
-        return ayat
+        return ayat_keys
             
     
     def merge_added_ayat_to_topic_ayat(self, topic_ayat, added_ayat, position):
@@ -173,12 +180,20 @@ class CreateOrEditTopic(PageController):
         return self.get_int("sura_" + str(order))
     
 
+    def get_sura_name(self, order):
+        return self.request.get("sura_name_" + str(order))
+    
+
     def get_aya(self, order):
         return self.get_int("aya_" + str(order))
     
     
     def get_aya_content(self, order):
         return self.request.get("aya_content_" + str(order))
+    
+    
+    def get_aya_key(self, order):
+        return self.request.get("aya_key_" + str(order))
     
     
     def get_selected(self, order):
