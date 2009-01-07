@@ -57,15 +57,15 @@ class Topic(db.Model):
         db.delete(topic)
 
 
-    def set_ayat(self, ayat):
+    def set_ayat(self, ayat_keys):
         self.remove_ayat()
         topic_ayat = []
         count = 1
-        for aya in ayat:
+        for aya_key in ayat_keys:
             topic_aya = TopicAya()
             topic_aya.topic = self
             topic_aya.order = count
-            topic_aya.aya = aya
+            topic_aya.aya = aya_key
             topic_ayat.append(topic_aya)
             count += 1
         db.put(topic_ayat)
