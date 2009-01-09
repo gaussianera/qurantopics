@@ -46,11 +46,11 @@
             <input name="aya_content_{{ forloop.counter }}" value="{{ aya.aya_content }}" type="hidden"/>
             <input name="aya_key_{{ forloop.counter }}" value="{{ aya.aya_key }}" type="hidden"/>
             
-            <td> <input name="selected_{{ forloop.counter }}" type="checkbox" value="on"/> </td>       
-            <td> {{ forloop.counter }}. </td>
-            <td> [{{ aya.sura_number }}: {{ aya.sura_name }}] </td>
-            <td> ({{ aya.aya_number }}) </td>
-            <td> {{ aya.aya_content }} </td>
+            <td valign="top"> <input name="selected_{{ forloop.counter }}" type="checkbox" value="on"/> </td>       
+            <td valign="top"> {{ forloop.counter }}. </td>
+            <td valign="top"> [{{ aya.sura_number }}:{{ aya.sura_name }}] </td>
+            <td valign="top"> ({{ aya.aya_number }}) </td>
+            <td valign="top"> {{ aya.aya_content }} </td>
         </tr>
         {% endfor %}
     </table>

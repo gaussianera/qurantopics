@@ -9,6 +9,8 @@ from controllers.page_controller import PageController
 
 
 class CreateOrEditTopic(PageController):
+    
+    topic_edit_view = None
 
     def perform_get(self):
         self.require_login()
@@ -17,60 +19,58 @@ class CreateOrEditTopic(PageController):
 
     def perform_post(self):
         self.require_login()
-        topic_edit_view = self.populate_view()
-        topic_ayat = topic_edit_view.ayat_display
+        self.topic_edit_view = self.populate_view()
 
         if (self.request.get('add')):
-            sura = Sura.get_by_number(topic_edit_view.sura)
-            ayat = sura.get_ayat_query_in_range(topic_edit_view.from_aya, topic_edit_view.to_aya)
+            sura = Sura.get_by_number(self.topic_edit_view.sura)
+            ayat = sura.get_ayat_query_in_range(self.topic_edit_view.from_aya, self.topic_edit_view.to_aya)
             added_ayat = self.make_ayat_display_from_ayat(ayat)
-            topic_edit_view.ayat_display = self.merge_added_ayat_to_topic_ayat(topic_ayat, added_ayat, topic_edit_view.position)
+            self.merge_added_ayat_to_topic_ayat(added_ayat)
         elif (self.request.get('edit')):
-            self.edit_topic(topic_edit_view)
+            self.edit_topic()
         elif (self.request.get('remove')):
-            topic_edit_view.ayat_display = self.remove_selected(topic_ayat)
+            self.remove_selected()
         elif (self.request.get('move_to_position')):
-            topic_edit_view.ayat_display = self.move_selected_to_position(topic_ayat, topic_edit_view.to_position)
+            self.move_selected_to_position()
         elif (self.request.get('save')):
-            self.save_topic(topic_edit_view)
+            self.save_topic()
         else:
             logging.info("operation not handled")
 
-        self.template_values['topic'] = topic_edit_view
+        self.template_values['topic'] = self.topic_edit_view
     
         return 'edit_topic.html'
     
         
-    def save_topic(self, topic_edit_view):
+    def save_topic(self):
         title = self.request.get('title')
         if not title:
-            topic_edit_view.error = "لم يتم إدخال عنوان الموضوع"
-        elif not topic_edit_view.ayat_display:
-            topic_edit_view.error = "الموضوع لا يتضمن أي آيات"
+            self.topic_edit_view.error = "لم يتم إدخال عنوان الموضوع"
+        elif not self.topic_edit_view.ayat_display:
+            self.topic_edit_view.error = "الموضوع لا يتضمن أي آيات"
         else:
-            if topic_edit_view.topic_id:
-                logging.debug("topic_edit_view.topic_id = " + str(topic_edit_view.topic_id))
-                topic = Topic.get_by_id(topic_edit_view.topic_id)
+            if self.topic_edit_view.topic_id:
+                topic = Topic.get_by_id(self.topic_edit_view.topic_id)
                 self.require_user(topic.created_by)
             else:
                 topic = Topic()
                 topic.created_by = self.user
                 topic.put()
                 topic.topic_id = topic.key().id()
-                topic_edit_view.topic_id = topic.topic_id 
+                self.topic_edit_view.topic_id = topic.topic_id 
             topic.title = title
             topic.put()
-            ayat_keys = self.make_ayat_keys_from_ayat_display(topic_edit_view.ayat_display)
+            ayat_keys = self.make_ayat_keys_from_ayat_display(self.topic_edit_view.ayat_display)
             topic.set_ayat(ayat_keys)
 
     
-    def edit_topic(self, topic_edit_view):
+    def edit_topic(self):
         topic_id = self.get_int('topic_id')
-        topic = Topic.get_by_id(topic_edit_view.topic_id)
+        topic = Topic.get_by_id(self.topic_edit_view.topic_id)
         self.require_user(topic.created_by)
-        topic_edit_view.topic_id = topic_id
-        topic_edit_view.title = topic.title
-        topic_edit_view.ayat_display = self.make_ayat_display_from_ayat(topic.get_ayat())
+        self.topic_edit_view.topic_id = topic_id
+        self.topic_edit_view.title = topic.title
+        self.topic_edit_view.ayat_display = self.make_ayat_display_from_ayat(topic.get_ayat())
         
 
     def populate_view(self):
@@ -119,16 +119,17 @@ class CreateOrEditTopic(PageController):
 
             
     def make_ayat_keys_from_ayat_display(self, ayat_display):
-        logging.debug("start: make_ayat_from_ayat_display")    
         ayat_keys = []
         for aya_display in ayat_display:
             aya_key = db.Key(aya_display.aya_key)
             ayat_keys.append(aya_key)
-        logging.debug("end: make_ayat_from_ayat_display")    
         return ayat_keys
             
     
-    def merge_added_ayat_to_topic_ayat(self, topic_ayat, added_ayat, position):
+    def merge_added_ayat_to_topic_ayat(self, added_ayat):
+        topic_ayat = self.topic_edit_view.ayat_display
+        position = self.topic_edit_view.position
+        
         ayat_to_add = []
         for aya_display in added_ayat:
             if not self.list_contains_aya(topic_ayat, aya_display):
@@ -139,7 +140,8 @@ class CreateOrEditTopic(PageController):
             topic_ayat = topic_ayat[:position] + ayat_to_add + topic_ayat[position:]
         else:
             topic_ayat.extend(ayat_to_add)
-        return topic_ayat
+            
+        self.topic_edit_view.ayat_display = topic_ayat
     
     
     def list_contains_aya(self, ayat_display, aya_display):
@@ -148,20 +150,22 @@ class CreateOrEditTopic(PageController):
                 return True
         return False
     
-    def remove_selected(self, topic_ayat):
+    def remove_selected(self):
         new_set = []
-        for aya_display in topic_ayat:
+        for aya_display in self.topic_edit_view.ayat_display:
             if (not aya_display.selected):
                 new_set.append(aya_display)
-        return new_set
+        
+        self.topic_edit_view.ayat_display = new_set
     
     
-    def move_selected_to_position(self, topic_ayat, to_position):
+    def move_selected_to_position(self):
+        to_position = self.topic_edit_view.to_position
         before_position = []
         selected = []
         after_position = []
         count = 1
-        for aya_display in topic_ayat:
+        for aya_display in self.topic_edit_view.ayat_display:
             if aya_display.selected:
                 selected.append(aya_display)
             elif count < to_position:
@@ -169,7 +173,8 @@ class CreateOrEditTopic(PageController):
             else:
                 after_position.append(aya_display)
             count += 1
-        return before_position + selected + after_position
+        
+        self.topic_edit_view.ayat_display = before_position + selected + after_position
     
     
     def same_aya(self, aya1, aya2):
