@@ -8,6 +8,11 @@
     <div style="color: red; font-weight: bold" > {{ topic.error }}<br/> </div>
 {% endif %}
 
+{% if topic.message %}
+    <div style="font-weight: bold; background-color: silver;" > &nbsp; {{ topic.message }} </div>
+    <br/>
+{% endif %}
+
 <form method="post">
 
     {% if topic.topic_id %}
@@ -16,7 +21,6 @@
     
 		  <label> عنوان الموضوع * </label>
     <input name="title" type="text" size="75" value="{{ topic.title }}" />
-    <input name="save" type="submit" value="احفظ الموضوع" >
     
     <hr/>
     <label> أضف آيات: </label>
@@ -55,6 +59,10 @@
         {% endfor %}
     </table>
   
+    <div align="center">
+        <hr>
+        <input name="save" type="submit" value="احفظ الموضوع" >
+    </div>
 </form>
 
 {% endblock %}

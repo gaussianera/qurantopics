@@ -19,13 +19,16 @@ class CreateOrEditTopic(PageController):
 
     def perform_post(self):
         self.require_login()
-        self.topic_edit_view = self.populate_view()
+        self.populate_view()
 
         if (self.request.get('add')):
-            sura = Sura.get_by_number(self.topic_edit_view.sura)
-            ayat = sura.get_ayat_query_in_range(self.topic_edit_view.from_aya, self.topic_edit_view.to_aya)
-            added_ayat = self.make_ayat_display_from_ayat(ayat)
-            self.merge_added_ayat_to_topic_ayat(added_ayat)
+            self.validate_requirements_for_add()
+            logging.debug("error = [" + str(self.topic_edit_view.error) + "]")
+            if not self.topic_edit_view.error:
+                sura = Sura.get_by_number(self.topic_edit_view.sura)
+                ayat = sura.get_ayat_query_in_range(self.topic_edit_view.from_aya, self.topic_edit_view.to_aya)
+                added_ayat = self.make_ayat_display_from_ayat(ayat)
+                self.merge_added_ayat_to_topic_ayat(added_ayat)
         elif (self.request.get('edit')):
             self.edit_topic()
         elif (self.request.get('remove')):
@@ -41,7 +44,12 @@ class CreateOrEditTopic(PageController):
     
         return 'edit_topic.html'
     
-        
+    
+    def validate_requirements_for_add(self):
+        if not self.topic_edit_view.sura or not self.topic_edit_view.from_aya:
+            self.topic_edit_view.error = "لم يتم ادخال رقم السورة أو الآية بصورة صحيحة"
+    
+    
     def save_topic(self):
         title = self.request.get('title')
         if not title:
@@ -62,6 +70,7 @@ class CreateOrEditTopic(PageController):
             topic.put()
             ayat_keys = self.make_ayat_keys_from_ayat_display(self.topic_edit_view.ayat_display)
             topic.set_ayat(ayat_keys)
+            self.topic_edit_view.message = "تم حفظ الموضوع"
 
     
     def edit_topic(self):
@@ -74,21 +83,21 @@ class CreateOrEditTopic(PageController):
         
 
     def populate_view(self):
-        topics_edit_view = TopicEditView()
-        topics_edit_view.topic_id = self.get_int('topic_id')
-        topics_edit_view.title = self.request.get('title')
-        topics_edit_view.sura = self.get_int('sura')
-        topics_edit_view.from_aya = self.get_int('from_aya')
+        self.topic_edit_view = TopicEditView()
+        self.topic_edit_view.topic_id = self.get_int('topic_id')
+        self.topic_edit_view.title = self.request.get('title')
+        self.topic_edit_view.sura = self.get_int('sura')
+        self.topic_edit_view.from_aya = self.get_int('from_aya')
         to_aya = self.get_int('to_aya')
         if not to_aya:
-            to_aya = topics_edit_view.from_aya
-        topics_edit_view.to_aya = to_aya
-        topics_edit_view.position = self.get_int('position')
-        topics_edit_view.to_position = self.get_int('to_position')
-        self.populate_ayat(topics_edit_view)
-        return topics_edit_view
+            to_aya = self.topic_edit_view.from_aya
+        self.topic_edit_view.to_aya = to_aya
+        self.topic_edit_view.position = self.get_int('position')
+        self.topic_edit_view.to_position = self.get_int('to_position')
+        self.populate_ayat()
 
-    def populate_ayat(self, topics_edit_view):
+
+    def populate_ayat(self):
         count = 1
         ayat_display = []
         while (self.request.get("sura_" + str(count))):
@@ -102,7 +111,7 @@ class CreateOrEditTopic(PageController):
             ayat_display.append(aya_display)
             count = count + 1
         
-        topics_edit_view.ayat_display = ayat_display
+        self.topic_edit_view.ayat_display = ayat_display
         
     
     def make_ayat_display_from_ayat(self, ayat):
