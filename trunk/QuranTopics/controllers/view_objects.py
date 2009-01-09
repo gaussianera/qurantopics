@@ -1,9 +1,9 @@
 
 class TopicEditView():
-    None
+    message = None
+    error = None
 
 class TopicAyaView():
-    error = unicode
     selected = bool
     sura_number = int
     sura_name = unicode
