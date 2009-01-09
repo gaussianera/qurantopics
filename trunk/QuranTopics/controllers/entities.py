@@ -38,6 +38,7 @@ class Topic(db.Model):
     topic_id = db.IntegerProperty()
     title = db.StringProperty()
     created_by = db.UserProperty()
+    ayat_keys = db.ListProperty(db.Key)
 
     
     @staticmethod
@@ -53,27 +54,14 @@ class Topic(db.Model):
 
     @staticmethod
     def delete(topic):
-        topic.remove_ayat()
         db.delete(topic)
-
-
-    def set_ayat(self, ayat_keys):
-        self.remove_ayat()
-        topic_ayat = []
-        count = 1
-        for aya_key in ayat_keys:
-            topic_aya = TopicAya()
-            topic_aya.topic = self
-            topic_aya.order = count
-            topic_aya.aya = aya_key
-            topic_ayat.append(topic_aya)
-            count += 1
-        db.put(topic_ayat)
-        
-    def remove_ayat(self):
-        db.delete(self.topicaya_set)
     
+    
+    # todo: remove if cond, and rest of the code
     def get_ayat(self):
+        if self.ayat_keys:
+            return db.get(self.ayat_keys)
+        
         topic_ayat = self.topicaya_set
         topic_ayat.order('order')
         return [ topic_aya.aya for topic_aya in topic_ayat ]

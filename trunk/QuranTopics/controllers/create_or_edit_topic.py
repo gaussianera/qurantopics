@@ -67,9 +67,9 @@ class CreateOrEditTopic(PageController):
                 topic.topic_id = topic.key().id()
                 self.topic_edit_view.topic_id = topic.topic_id 
             topic.title = title
-            topic.put()
             ayat_keys = self.make_ayat_keys_from_ayat_display(self.topic_edit_view.ayat_display)
-            topic.set_ayat(ayat_keys)
+            topic.ayat_keys = ayat_keys
+            topic.put()
             self.topic_edit_view.message = "تم حفظ الموضوع"
 
     
