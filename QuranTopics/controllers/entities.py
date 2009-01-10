@@ -57,17 +57,6 @@ class Topic(db.Model):
         db.delete(topic)
     
     
-    # todo: remove if cond, and rest of the code
     def get_ayat(self):
-        if self.ayat_keys:
-            return db.get(self.ayat_keys)
-        
-        topic_ayat = self.topicaya_set
-        topic_ayat.order('order')
-        return [ topic_aya.aya for topic_aya in topic_ayat ]
+        return db.get(self.ayat_keys)
 
-
-class TopicAya(db.Model):
-    topic = db.ReferenceProperty(Topic)
-    order = db.IntegerProperty()
-    aya = db.ReferenceProperty(Aya)

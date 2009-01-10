@@ -2,7 +2,7 @@
 from google.appengine.ext.webapp import template
 from google.appengine.ext import db
 from controllers.view_objects import TopicEditView, TopicAyaView, TopicLine
-from controllers.entities import Sura, Aya, Topic, TopicAya
+from controllers.entities import Sura, Aya, Topic
 from controllers.page_controller import PageController
 
 
