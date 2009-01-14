@@ -1,6 +1,7 @@
 import cgi
-
+import logging
 import os
+
 from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext import db
@@ -27,7 +28,9 @@ class SurasListPage(PageController):
 
 class SurasDisplayPage(PageController):
     def perform_get(self):
-        sura_number = self.request.get('sura')
+        leading_length = len('/display_sura/')
+        sura_number = int(self.request.path[leading_length:])
+        #sura_number = self.request.get('sura')
         sura = Sura.gql("WHERE number = :number ", number = int(sura_number)).fetch(1)[0]
         ayat = sura.aya_set
         ayat.order('number')
@@ -41,11 +44,12 @@ class SurasDisplayPage(PageController):
 application = webapp.WSGIApplication(
                                      [('/', MainPage),
                                       ('/list_suras', SurasListPage),
-                                      ('/display_sura', SurasDisplayPage)],
+                                      ('/display_sura/.*', SurasDisplayPage)],
                                      debug=True)
 
 def main():
-  run_wsgi_app(application)
+    logging.getLogger().setLevel(logging.DEBUG)
+    run_wsgi_app(application)
 
 if __name__ == "__main__":
   main()

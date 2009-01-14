@@ -15,6 +15,7 @@ class ViewTopic(PageController):
     
         self.template_values['topic'] = topic
         self.template_values['lines'] = topic_lines
+        self.template_values['creating_user_or_admin'] = self.is_logged_in_user_or_admin(topic.created_by)
     
         return 'view_topic.html'
     
@@ -40,6 +41,7 @@ class ViewTopic(PageController):
                 topic_line = TopicLine()
 
             topic_line.sura_number = aya.sura.number
+            topic_line.sura_name = aya.sura.name
             topic_line.aya_number = aya.number
             topic_line.aya_content = aya.content
             topic_lines.append(topic_line)

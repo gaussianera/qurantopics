@@ -12,7 +12,7 @@
 {% for sura in suras %}
 	<tr>
 		<td> {{ sura.number }}. </td>
-		<td> <a href="display_sura?sura={{ sura.number }}" > {{ sura.name }} </a> </td>
+		<td> <a href="display_sura/{{ sura.number }}" > {{ sura.name }} </a> </td>
 		<td> ( {{ sura.number_of_ayat }}
 			{% if sura.number_of_ayat  %}
 											    		 آيات

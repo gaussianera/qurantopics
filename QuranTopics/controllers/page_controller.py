@@ -57,10 +57,14 @@ class PageController(webapp.RequestHandler):
             raise NoUserLoggedIn
     
     def require_user(self, user):
-        if not users.is_current_user_admin() and self.user != user:
+        if not self.is_logged_in_user_or_admin(user):
             self.redirect('/')
             raise UserNotPermittedToPerformOperation, self.user.email()
                          
+    
+    def is_logged_in_user_or_admin(self, user):
+        return users.is_current_user_admin() or self.user == user
+    
 
     def get_int(self, name):
         value = self.request.get(name)

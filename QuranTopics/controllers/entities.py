@@ -37,8 +37,8 @@ class Topic(db.Model):
 
     topic_id = db.IntegerProperty()
     title = db.StringProperty()
-    created_by = db.UserProperty()
     ayat_keys = db.ListProperty(db.Key)
+    created_by = db.UserProperty()
 
     
     @staticmethod

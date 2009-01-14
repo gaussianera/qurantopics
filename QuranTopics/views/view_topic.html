@@ -6,24 +6,14 @@
 
 <h2> {{ topic.title }} </h2>
 
-<form method="post" action="/topics/add_edit">
-    <input name="topic_id" type="hidden" value="{{ topic.topic_id }}" />
-    <input name="edit" type="submit" value="عدل الموضوع" >
-</form>
-
 <table>
-<tr>
-    <th> سورة </th>
-    <th> آية </th>
-    <th> </th>
-</tr>
 {% for line in lines %}
 <tr>
     {% if line.separator %}
         <td colspan="3"> <hr/> </td>
     {% else %}
-        <td> {{ line.sura_number }} </td>
-        <td> {{ line.aya_number }} </td>
+        <td> [{{ line.sura_number }}:{{ line.sura_name }}] </td>
+        <td> ({{ line.aya_number }}) </td>
         <td> {{ line.aya_content }} </td>
     {% endif %}
 </tr>
@@ -31,9 +21,24 @@
 <td colspan="3"> <hr/> </td>
 </table>
 
+{% if creating_user_or_admin %}
+<table>
+<tr>
+<td>
+    <form method="post" action="/topics/add_edit">
+        <input name="topic_id" type="hidden" value="{{ topic.topic_id }}" />
+        <input name="edit" type="submit" value="عدل الموضوع" >
+    </form>
+</td>
+<td> | </td>
+<td>
 <form method="post">
     <input name="topic_id" type="hidden" value="{{ topic.topic_id }}" />
     <input name="delete" type="submit" value="احذف الموضوع" >
 </form>
+</td>
+</tr>
+</table>
+{% endif %}
 
 {% endblock %}
