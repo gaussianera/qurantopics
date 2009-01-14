@@ -14,6 +14,7 @@ class TopicAyaView():
 class TopicLine():
     separator = bool
     sura_number = int
+    sura_name = ""
     aya_number = int
     aya_content = unicode
     
