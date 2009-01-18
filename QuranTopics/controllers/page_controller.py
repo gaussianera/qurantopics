@@ -25,9 +25,13 @@ class PageController(webapp.RequestHandler):
         self.set_user()
         try:
             view = action()
-            self.display_view(view)
         except UserAuthException, message:
             logging.debug("User authorization error: " + str(message))
+
+        if view[-5:] == ".html":
+            self.display_view(view)
+        else:
+            self.redirect(view)
         
 
     def set_user(self):
