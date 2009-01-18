@@ -8,7 +8,7 @@ from controllers.view_topic import ViewTopic
         
 application = webapp.WSGIApplication(
                                      [('/topics/add_edit', CreateOrEditTopic),
-                                      ('/topics/view', ViewTopic)],
+                                      ('/topics/view/.*', ViewTopic)],
                                      debug=True)
 
 def main():

@@ -9,7 +9,8 @@ from controllers.page_controller import PageController
 class ViewTopic(PageController):
 
     def perform_get(self):
-        topic_id = self.get_int("topic_id")
+        leading_length = len('/topics/view/')
+        topic_id = int(self.request.path[leading_length:])
         topic = Topic.get_by_id(topic_id)
         topic_lines = self.make_topic_lines(topic.get_ayat())
     
@@ -26,7 +27,7 @@ class ViewTopic(PageController):
             topic = Topic.get_by_id(topic_id)
             self.require_user(topic.created_by)
             Topic.delete(topic)
-            return "index.html"
+            return "/"
 
     
     def make_topic_lines(self, ayat):

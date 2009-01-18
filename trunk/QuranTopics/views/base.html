@@ -31,6 +31,20 @@
         </div>
         
         <div style="float: none; clear: both">
+        <table>
+        <tr>
+            <td> <a href="/list_suras"> تصفح القرآن </a> </td>
+            <td> | </td>
+            <td>
+                {% if user %}
+                <a href="/topics/add_edit"> أضف موضوعاً </a>
+                {% endif %}
+             </td>
+        </tr>
+        </table>
+        </div>
+        
+        <div style="float: none; clear: both">
             {% block content %}{% endblock %}
         </div>
 

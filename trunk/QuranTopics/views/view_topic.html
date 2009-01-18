@@ -12,7 +12,7 @@
     {% if line.separator %}
         <td colspan="3"> <hr/> </td>
     {% else %}
-        <td> [{{ line.sura_number }}:{{ line.sura_name }}] </td>
+        <td> <a href="/display_sura/{{ line.sura_number }}">   [{{ line.sura_number }}:{{ line.sura_name }}] </a> </td>
         <td> ({{ line.aya_number }}) </td>
         <td> {{ line.aya_content }} </td>
     {% endif %}
