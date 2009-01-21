@@ -11,7 +11,7 @@
 <table border="0">
 {% for aya in ayat %}
 	<tr>
-		<td valign="top"> ({{ aya.number }}) </td>
+		<td valign="top"> <a name="{{ aya.number }}"> ({{ aya.number }}) </a> </td>
 		<td> {{ aya.content }} </td>
 	</tr>
 {% endfor %}
