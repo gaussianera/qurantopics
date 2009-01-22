@@ -16,8 +16,13 @@
         
         <div style="float: right;">
             <h1 style="padding: 0px">
-                <a href="/" style="text-decoration: none; color: #008800" >  مواضيع القرآن الكريم </a>
+                <a href="/"  class="permlink" >  مواضيع القرآن الكريم </a>
             </h1>
+        </div>
+        <div style="float: right; ">
+            <h3 style="margin-bottom: 0px; margin-top: 30pt; margin-right: 10pt">
+                حرر وشارك نتائج بحثك في القرآن الكريم
+            </h3>
         </div>
         <div style="float: left;">
             {{ user }}
@@ -31,18 +36,31 @@
         </div>
         
         <div style="float: none; clear: both">
-        <table>
+        <table style="background-color: silver">
         <tr>
-            <td> <a href="/list_suras"> تصفح القرآن </a> </td>
+            <td> <a href="/" class="permlink"> الرئيسية </a> </td>
+            <td> | </td>
+            <td> <a href="/list_suras" class="permlink"> تصفح القرآن </a> </td>
             <td> | </td>
             <td>
                 {% if user %}
-                <a href="/topics/add_edit"> أضف موضوعاً </a>
+                <a href="/topics/add_edit" class="permlink"> أضف موضوعاً </a>
                 {% endif %}
              </td>
+            <td> | </td>
+            <td> <a href="/" class="permlink"> مجموعة الرسائل </a> </td>
+            <td> | </td>
+            <td>
+                <form action="/">
+                    <input type="text" name="search_for" />
+                    <input type="submit" name="search" value="بحث" class="permlink" />
+                </form>
+            </td>
         </tr>
         </table>
         </div>
+        
+        <br/>
         
         <div style="float: none; clear: both">
             {% block content %}{% endblock %}
