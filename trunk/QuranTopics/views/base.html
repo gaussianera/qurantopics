@@ -16,7 +16,7 @@
         
         <div style="float: right;">
             <h1 style="padding: 0px">
-                <a href="/"  class="permlink" >  مواضيع القرآن الكريم </a>
+                <a href="/"  style="text-decoration: none; color: #008800;" >  مواضيع القرآن الكريم </a>
             </h1>
         </div>
         <div style="float: right; ">
@@ -24,40 +24,34 @@
                 حرر وشارك نتائج بحثك في القرآن الكريم
             </h3>
         </div>
-        <div style="float: left;">
-            {{ user }}
-            <a href="{{ user_link }}">
-                {% if user %}
-                خروج
-                {% else %}
-                 سجل الدخول (بحساب جوجل) 
-                {% endif %}
-            </a>
-        </div>
         
-        <div style="float: none; clear: both">
-        <table style="background-color: silver">
-        <tr>
-            <td> <a href="/" class="permlink"> الرئيسية </a> </td>
-            <td> | </td>
-            <td> <a href="/list_suras" class="permlink"> تصفح القرآن </a> </td>
-            <td> | </td>
-            <td>
+        <div style="clear: both; width: 100%; ">
+        <ul class="main-nav">
+            <li> <a href="/" > الرئيسية </a> </li>
+            <li> <a href="/list_suras" > تصفح القرآن </a> </li>
+            <li>
                 {% if user %}
-                <a href="/topics/add_edit" class="permlink"> أضف موضوعاً </a>
+                <a href="/topics/add_edit" > أضف موضوعاً </a>
                 {% endif %}
-             </td>
-            <td> | </td>
-            <td> <a href="http://groups.google.com/group/qurantopics" class="permlink" target="_blank"> مجموعة الرسائل </a> </td>
-            <td> | </td>
-            <td>
+             </li>
+            <li> <a href="http://groups.google.com/group/qurantopics" target="_blank"> مجموعة الرسائل </a> </li>
+            <li>
                 <form action="/search" method="post">
                     <input type="text" name="search_for" />
-                    <input type="submit" name="search" value="بحث" class="permlink" />
+                    <input type="submit" name="search" value="بحث" />
                 </form>
-            </td>
-        </tr>
-        </table>
+            </li>
+            <li style="float: left; ">
+                <a href="{{ user_link }}">
+                    {{ user }}
+                    {% if user %}
+                    خروج
+                    {% else %}
+                     سجل الدخول (بحساب جوجل) 
+                    {% endif %}
+                </a>
+            </li>
+        </ul>
         </div>
         
         <br/>

@@ -1,10 +1,36 @@
 body {
   font-family: Verdana, Helvetica, sans-serif;
-  background-color: #EEFFEE;
 }
 
-.permlink {
+ul.main-nav {
+    margin: 0pt;
+    padding: 0pt;
+    float: right;
+    width: 100%;
+    list-style:none; 
+    background-image: url('/navbar_bg.png');
+}
+
+ul.main-vav li, ul.main-nav li form input {
+    vertical-align: middle
+}
+
+ul.main-nav li {
+    float: right;
+    text-align: center;
+    padding: 4px 8px 4px 8px;
+    border-left: 1px solid #59d;
+}
+
+ul.main-nav li:hover
+{
+    background-image: url('/navbar_bg2.png');
+}
+
+ul.main-nav li a {
+    vertical-align: middle;
     text-decoration: none;
-    color: #008800; 
+    color: white; 
     font-weight: bold;
- }
+}
+
