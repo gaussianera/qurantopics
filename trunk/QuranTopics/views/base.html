@@ -29,11 +29,11 @@
         <ul class="main-nav">
             <li> <a href="/" > الرئيسية </a> </li>
             <li> <a href="/list_suras" > تصفح القرآن </a> </li>
+            {% if user %}
             <li>
-                {% if user %}
                 <a href="/topics/add_edit" > أضف موضوعاً </a>
-                {% endif %}
              </li>
+            {% endif %}
             <li> <a href="http://groups.google.com/group/qurantopics" target="_blank"> مجموعة الرسائل </a> </li>
             <li>
                 <form action="/search" method="post">
@@ -47,7 +47,7 @@
                     {% if user %}
                     خروج
                     {% else %}
-                     سجل الدخول (بحساب جوجل) 
+                     لإنشاء مواضيع جديدة سجل الدخول (بحساب جوجل) 
                     {% endif %}
                 </a>
             </li>

@@ -1,4 +1,5 @@
 from google.appengine.ext import db
+from google.appengine.ext import search
 
 class Sura(db.Model):
     number = db.IntegerProperty()
@@ -33,7 +34,7 @@ class Aya(db.Model):
         return sura.get_aya_by_number(aya_number)
 
 
-class Topic(db.Model):
+class Topic(search.SearchableModel):
 
     topic_id = db.IntegerProperty()
     title = db.StringProperty()

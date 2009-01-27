@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h3> نتائج البحث </h3>
+
+<ul>
+{% for topic in topics %}
+    <li> <a href="/topics/view/{{ topic.topic_id }}"> {{ topic.title }} </a> </li>
+{% endfor %}
+</ul>
+
+{% endblock %}
