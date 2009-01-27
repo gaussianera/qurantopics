@@ -5,7 +5,6 @@ import os
 from google.appengine.api import users
 from google.appengine.ext import webapp
 from google.appengine.ext import db
-from google.appengine.ext import search
 from google.appengine.ext.webapp.util import run_wsgi_app
 from controllers.entities import Sura, Topic
 from controllers.page_controller import PageController
@@ -37,14 +36,18 @@ class SurasDisplayPage(PageController):
 
         self.template_values['sura'] = sura
         self.template_values['ayat'] = ayat
-
+        
         return 'sura_display.html'
 
 
 class SearchTopics(PageController):
+    def perform_get(self):
+        return "/"
+
     def perform_post(self):
         search_for = self.request.get('search_for')
-        topics = Topic.gql("WHERE title = :title", title = search_for)
+        topics = Topic.all().search(search_for)
+
         self.template_values['topics'] = topics
         
         return 'search_results.html'
