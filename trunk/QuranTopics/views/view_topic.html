@@ -4,13 +4,14 @@
 
 {% block content %}
 
-<div style="float: right">
-    <h2 style="margin: 0"> {{ topic.title }} </h2>
+<div style="float: right; width: 25%"> &nbsp; </div>
+<div style="float: right; width: 50%; text-align: center;">
+    <h1> {{ topic.title }} </h1>
 </div>
+<div style="float: left; width: 25%">
 
 {% if creating_user_or_admin %}
-<div style="float: left">
-    <table>
+    <table align="left">
     <tr>
     <td>
         <form method="post" action="/topics/add_edit">
@@ -26,24 +27,28 @@
     </td>
     </tr>
     </table>
-</div>
 {% endif %}
+</div>
 
-<div style="clear: both">
+<div style="clear: both;">
 
-<table>
+<table width="50%" align="center" class="quran_font">
+<tr> <td colspan="2">
 {% for line in lines %}
-<tr>
-    {% if line.separator %}
-        <td colspan="3"> <hr/> </td>
-    {% else %}
-        <td valign="top"> <a href="/display_sura/{{ line.sura_number }}">   [{{ line.sura_number }}:{{ line.sura_name }}] </a> </td>
-        <td valign="top"> <a href="/display_sura/{{ line.sura_number }}#{{ line.aya_number }}"> ({{ line.aya_number }}) </a> </td>
-        <td> {{ line.aya_content }} </td>
+    {% if line.new_section %}
+        </td> </tr>
+        <tr>
+        <td valign="top">
+            <div class="sura_link quran_text" style="border-left: thin solid maroon;">
+            <a href="/display_sura/{{ line.sura_number }}" style="margin-left: 10px; white-space:nowrap;"> {{ line.sura_number }}.{{ line.sura_name }} </a>
+            </div>
+        </td>
+        <td class="quran_section quran_text">
     {% endif %}
-</tr>
+        {{ line.aya_content }}
+        <a href="/display_sura/{{ line.sura_number }}#{{ line.aya_number }}" class="sura_link">({{ line.aya_number }})</a>
 {% endfor %}
-<tr> <td colspan="3"> <hr/> </td> </tr>
+</td> </tr>
 </table>
 
 </div>

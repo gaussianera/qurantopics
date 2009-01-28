@@ -12,7 +12,7 @@ class TopicAyaView():
     aya_key = str
 
 class TopicLine():
-    separator = bool
+    new_section = bool
     sura_number = int
     sura_name = ""
     aya_number = int
