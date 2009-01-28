@@ -4,17 +4,19 @@
 
 {% block content %}
 
-<h1>
+<h1 align="center">
   سورة {{ sura.name }}
 </h1>
 
-<table border="0">
+<div align="center">
+<p class="quran_font quran_section quran_text" style="width: 50%;">
 {% for aya in ayat %}
-	<tr>
-		<td valign="top"> <a name="{{ aya.number }}"> ({{ aya.number }}) </a> </td>
-		<td> {{ aya.content }} </td>
-	</tr>
+	<a name="{{ aya.number }}">
+     {{ aya.content }}
+     ({{ aya.number }})
+    </a>
 {% endfor %}
-</table>
+</p>
+</div>
     
 {% endblock %}

@@ -23,7 +23,6 @@ class CreateOrEditTopic(PageController):
 
         if (self.request.get('add')):
             self.validate_requirements_for_add()
-            logging.debug("error = [" + str(self.topic_edit_view.error) + "]")
             if not self.topic_edit_view.error:
                 sura = Sura.get_by_number(self.topic_edit_view.sura)
                 ayat = sura.get_ayat_query_in_range(self.topic_edit_view.from_aya, self.topic_edit_view.to_aya)
@@ -74,10 +73,8 @@ class CreateOrEditTopic(PageController):
 
     
     def edit_topic(self):
-        topic_id = self.get_int('topic_id')
         topic = Topic.get_by_id(self.topic_edit_view.topic_id)
         self.require_user(topic.created_by)
-        self.topic_edit_view.topic_id = topic_id
         self.topic_edit_view.title = topic.title
         self.topic_edit_view.ayat_display = self.make_ayat_display_from_ayat(topic.get_ayat())
         

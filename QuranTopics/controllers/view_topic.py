@@ -37,9 +37,7 @@ class ViewTopic(PageController):
         for aya in ayat:
             topic_line = TopicLine()
             if aya.sura.number != prev_sura or aya.number != prev_aya + 1:
-                topic_line.separator = True
-                topic_lines.append(topic_line)
-                topic_line = TopicLine()
+                topic_line.new_section = True
 
             topic_line.sura_number = aya.sura.number
             topic_line.sura_name = aya.sura.name
