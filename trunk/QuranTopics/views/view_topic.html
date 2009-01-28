@@ -4,7 +4,32 @@
 
 {% block content %}
 
-<h2> {{ topic.title }} </h2>
+<div style="float: right">
+    <h2 style="margin: 0"> {{ topic.title }} </h2>
+</div>
+
+{% if creating_user_or_admin %}
+<div style="float: left">
+    <table>
+    <tr>
+    <td>
+        <form method="post" action="/topics/add_edit">
+            <input name="topic_id" type="hidden" value="{{ topic.topic_id }}" />
+            <input name="edit" type="submit" value="عدل الموضوع" >
+        </form>
+    </td>
+    <td>
+    <form method="post">
+        <input name="topic_id" type="hidden" value="{{ topic.topic_id }}" />
+        <input name="delete" type="submit" value="احذف الموضوع" onclick="return confirm('هل ترغب في حذف الموضوع؟')">
+    </form>
+    </td>
+    </tr>
+    </table>
+</div>
+{% endif %}
+
+<div style="clear: both">
 
 <table>
 {% for line in lines %}
@@ -18,27 +43,9 @@
     {% endif %}
 </tr>
 {% endfor %}
-<td colspan="3"> <hr/> </td>
+<tr> <td colspan="3"> <hr/> </td> </tr>
 </table>
 
-{% if creating_user_or_admin %}
-<table>
-<tr>
-<td>
-    <form method="post" action="/topics/add_edit">
-        <input name="topic_id" type="hidden" value="{{ topic.topic_id }}" />
-        <input name="edit" type="submit" value="عدل الموضوع" >
-    </form>
-</td>
-<td> | </td>
-<td>
-<form method="post">
-    <input name="topic_id" type="hidden" value="{{ topic.topic_id }}" />
-    <input name="delete" type="submit" value="احذف الموضوع" >
-</form>
-</td>
-</tr>
-</table>
-{% endif %}
+</div>
 
 {% endblock %}
