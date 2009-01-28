@@ -72,7 +72,7 @@ class PageController(webapp.RequestHandler):
 
     def get_int(self, name):
         value = self.request.get(name)
-        if value.isdigit() and len(value) < 5 and len(value) > 0:
+        if value.isdigit() and len(value) > 0:
             return int(value)
         return None
     
