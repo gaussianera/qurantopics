@@ -8,7 +8,7 @@ ul.main-nav {
     float: right;
     width: 100%;
     list-style:none; 
-    background-image: url('/navbar_bg.png');
+    background-image: url('/navbar.png');
 }
 
 ul.main-vav li, ul.main-nav li form input {
@@ -24,7 +24,7 @@ ul.main-nav li {
 
 ul.main-nav li:hover
 {
-    background-image: url('/navbar_bg2.png');
+    background-image: url('/navbar2.png');
 }
 
 ul.main-nav li a {
@@ -43,7 +43,7 @@ ul.main-nav li a {
 
 .sura_link:hover {
     color: white;
-    background-image: url('/navbar_bg.png');
+    background-image: url('/navbar.png');
 }
 
 .quran_font {
