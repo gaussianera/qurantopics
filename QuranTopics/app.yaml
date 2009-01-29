@@ -11,13 +11,13 @@ handlers:
   static_files: static/images/favicon.ico
   upload: static/images/favicon.ico
 
-- url: /navbar_bg.png
-  static_files: static/images/navbar_bg.png
-  upload: static/images/navbar_bg.png
+- url: /navbar.png
+  static_files: static/images/navbar.png
+  upload: static/images/navbar.png
 
-- url: /navbar_bg2.png
-  static_files: static/images/navbar_bg2.png
-  upload: static/images/navbar_bg2.png
+- url: /navbar2.png
+  static_files: static/images/navbar2.png
+  upload: static/images/navbar2.png
 
 - url: /load/.*
   script: controllers/data_loader.py
