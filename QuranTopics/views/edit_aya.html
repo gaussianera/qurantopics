@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %} تصحيح آية {% endblock %}
+
+{% block content %}
+
+سورة: {{ aya.sura.number }}. {{ aya.sura.name }}
+<br>
+آية: {{ aya.number }}
+
+<br>
+
+<textarea rows="10" cols="50" class="quran_font">
+    {{ aya.content }}
+</textarea>
+<br>
+
+<form method="post">
+    
+    <input name="aya_key" type="hidden" value="{{ aya.key }}" />
+    <input name="edit" type="submit" value="صحح" >
+    
+    <input name="delete" type="submit" value="احذف" onclick="return confirm('هل ترغب في حذف الآية؟')">
+    
+    
+</form>
+
+<br>
+الآية مذكورة في المواضيع:
+
+<table>
+</table>
+
+
+
+{% endblock %}
