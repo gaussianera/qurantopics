@@ -5,6 +5,8 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 from google.appengine.ext import db
 
 from controllers.entities import Sura, Aya
+from controllers.page_controller import PageController
+
 
 
 class RemoveSura(webapp.RequestHandler):
@@ -26,10 +28,22 @@ class ReputSura(webapp.RequestHandler):
         self.response.out.write ("reput num of ayat: " + str(len(ayat)))
         
 
+class EditAya(PageController):
+
+    def perform_get(self):
+        sura_number = int(self.request.get('sura'))
+        aya_number = int(self.request.get('aya'))
+        aya = Aya.get_by_sura_and_aya_number(sura_number, aya_number)
+        self.template_values['aya'] = aya
+ 
+        return 'edit_aya.html'
+        
+
 
 application = webapp.WSGIApplication(
                                      [('/admin/remove_sura', RemoveSura),
-                                      ('/admin/reput_sura', ReputSura)],
+                                      ('/admin/reput_sura', ReputSura),
+                                      ('/admin/edit_aya', EditAya)],
                                      debug=True)
 
 def main():
