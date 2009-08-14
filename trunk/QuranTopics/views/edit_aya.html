@@ -4,33 +4,46 @@
 
 {% block content %}
 
+<form method="post">
+
 سورة: {{ aya.sura.number }}. {{ aya.sura.name }}
 <br>
 آية: {{ aya.number }}
 
 <br>
-
-<textarea rows="10" cols="50" class="quran_font">
-    {{ aya.content }}
-</textarea>
+<textarea rows="10" cols="50" class="quran_font" name="aya_content">{{ aya.content }}</textarea>
 <br>
 
-<form method="post">
-    
-    <input name="aya_key" type="hidden" value="{{ aya.key }}" />
-    <input name="edit" type="submit" value="صحح" >
-    
-    <input name="delete" type="submit" value="احذف" onclick="return confirm('هل ترغب في حذف الآية؟')">
-    
-    
+<input name="aya_key" type="hidden" value="{{ aya.key }}" />
+<input name="edit" type="submit" value="صحح" >
+
 </form>
 
 <br>
 الآية مذكورة في المواضيع:
 
+<ul>
+{% for aya_topic in aya_topics %}
+    <li> {{ aya_topic }} </li>
+{% endfor %}
+</ul>
+
+{% if show_delete %}
 <table>
+{% for aya in ayat %}
+<tr>
+    <td> {{ aya.key }} </td>
+    <td>
+        <form method="post">
+            <input name="aya_key" type="hidden" value="{{ aya.key }}" />
+            <input name="delete" type="submit" value="احذف" onclick="return confirm('هل ترغب في حذف الآية؟')">
+        </form>
+    </td> 
+</tr>
+{% endfor %}
 </table>
 
+{% endif %}
 
 
 {% endblock %}
