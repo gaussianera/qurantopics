@@ -51,7 +51,7 @@ class EditAya(PageController):
             aya_topics.append("مفتاح = " + str(aya.key()));
             topics = self.get_topics_for_aya(aya)
             for topic in topics:
-                aya_topics.append("موضوع = " + str(topic.topic_id) + ":" + str(topic.title))
+                aya_topics.append("موضوع = " + str(topic.topic_id))
         
         
         self.template_values['aya'] = ayat[0]
