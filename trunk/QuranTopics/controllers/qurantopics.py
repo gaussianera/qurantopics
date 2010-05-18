@@ -52,12 +52,18 @@ class SearchTopics(PageController):
         
         return 'search_results.html'
 
+class StaticPages(PageController):
+    def perform_get(self):
+        page_name = self.request.path[1:]
+        return page_name + ".html"
+
 
 application = webapp.WSGIApplication(
                                      [('/', MainPage),
                                       ('/list_suras', SurasListPage),
                                       ('/display_sura/.*', SurasDisplayPage),
-                                      ('/search', SearchTopics)],
+                                      ('/search', SearchTopics),
+                                      ('/.*', StaticPages)],
                                      debug=True)
 
 def main():
