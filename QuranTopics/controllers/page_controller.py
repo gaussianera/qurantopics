@@ -28,10 +28,19 @@ class PageController(webapp.RequestHandler):
         except UserAuthException, message:
             logging.debug("User authorization error: " + str(message))
 
-        if view[-5:] == ".html":
-            self.display_view(view)
-        else:
-            self.redirect(view)
+        try:
+            if view[-5:] == ".html":
+                self.display_view(view)
+            else:
+                self.redirect(view)
+        except Exception, exception:
+            logging.error("Application error: " + str(type(exception)) + ": " + str(exception))
+            traceback.print_exc(exception)
+            if users.is_current_user_admin():
+                self.response.out.write("<br>".join(traceback.format_exc(exception).splitlines()))
+            else:
+                self.redirect("/")
+                
         
 
     def set_user(self):
