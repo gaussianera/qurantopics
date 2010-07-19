@@ -4,6 +4,7 @@ class TopicEditView():
     error = None
 
 class TopicAyaView():
+    position = int
     selected = bool
     sura_number = int
     sura_name = unicode

@@ -99,6 +99,7 @@ class CreateOrEditTopic(PageController):
         ayat_display = []
         while (self.request.get("sura_" + str(count))):
             aya_display = TopicAyaView()
+            aya_display.position = self.get_position(count)
             aya_display.selected = self.get_selected(count)
             aya_display.sura_number = self.get_sura(count)
             aya_display.sura_name = self.get_sura_name(count)
@@ -108,6 +109,7 @@ class CreateOrEditTopic(PageController):
             ayat_display.append(aya_display)
             count = count + 1
         
+        ayat_display.sort(key = lambda aya: aya.position)
         self.topic_edit_view.ayat_display = ayat_display
         
     
@@ -186,6 +188,10 @@ class CreateOrEditTopic(PageController):
     def same_aya(self, aya1, aya2):
         return aya1.sura_number == aya2.sura_number and aya1.aya_number == aya2.aya_number
         
+    
+    def get_position(self, order):
+        return self.get_int("position_" + str(order))
+
     
     def get_sura(self, order):
         return self.get_int("sura_" + str(order))
