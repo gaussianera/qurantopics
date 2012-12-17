@@ -6,7 +6,7 @@
 
 <div style="float: right; width: 25%"> &nbsp; </div>
 <div style="float: right; width: 50%; text-align: center;">
-    <h1> {{ topic.title }} </h1>
+    <h2> {{ topic.title }} </h2>
 </div>
 <div style="float: left; width: 25%">
 
@@ -16,13 +16,13 @@
     <td>
         <form method="post" action="/topics/add_edit">
             <input name="topic_id" type="hidden" value="{{ topic.topic_id }}" />
-            <input name="edit" type="submit" value="عدل الموضوع" >
+            <input class="btn" name="edit" type="submit" value="عدل الموضوع" >
         </form>
     </td>
     <td>
     <form method="post">
         <input name="topic_id" type="hidden" value="{{ topic.topic_id }}" />
-        <input name="delete" type="submit" value="احذف الموضوع" onclick="return confirm('هل ترغب في حذف الموضوع؟')">
+        <input class="btn" name="delete" type="submit" value="احذف الموضوع" onclick="return confirm('هل ترغب في حذف الموضوع؟')">
     </form>
     </td>
     </tr>
@@ -32,7 +32,7 @@
 
 <div style="clear: both;">
 
-<table width="50%" align="center" class="quran_font">
+<table width="70%" align="center" class="quran_font">
 <tr> <td colspan="2">
 {% for line in lines %}
     {% if line.new_section %}
@@ -40,7 +40,10 @@
         <tr>
         <td valign="top">
             <div class="sura_link quran_text" style="border-left: thin solid maroon;">
-            <a href="/display_sura/{{ line.sura_number }}" style="margin-left: 10px; white-space:nowrap;"> {{ line.sura_number }}.{{ line.sura_name }} </a>
+	            <a href="/display_sura/{{ line.sura_number }}" 
+	               style="text-decoration: none; margin-left: 10px; white-space:nowrap;"> 
+	               {{ line.sura_number }}.{{ line.sura_name }} 
+	            </a>
             </div>
         </td>
         <td class="quran_section quran_text">

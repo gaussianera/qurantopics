@@ -4,25 +4,26 @@
 
 {% block content %}
 
-<h1>
+<h2>
   فهرس السور
-</h1>
+</h2>
 
-<table border="0">
+<ul class="nav nav-pills nav-stacked">
 {% for sura in suras %}
-	<tr>
-		<td> {{ sura.number }}. </td>
-		<td> <a href="display_sura/{{ sura.number }}" > {{ sura.name }} </a> </td>
-		<td> ( {{ sura.number_of_ayat }}
-			{% if sura.number_of_ayat  %}
-											    		 آيات
-		    {% else %}
-														    آية
-		    {% endif %}
-		  ) 
-		</td>
-	</tr>
+	<li>
+		<a href="display_sura/{{ sura.number }}" >
+			{{ sura.number }}. 
+		    {{ sura.name }}
+			( {{ sura.number_of_ayat }}
+				{% if not sura.number_of_ayat  %}
+												    		 آيات
+			    {% else %}
+															    آية
+			    {% endif %}
+			  ) 
+	    </a>
+	</li>
 {% endfor %}
-</table>
+</ul>
     
 {% endblock %}

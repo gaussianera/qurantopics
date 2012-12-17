@@ -1,37 +1,18 @@
 body {
-  font-family: Verdana, Helvetica, sans-serif;
+	padding-top: 60px;
+	padding-bottom: 60px;
 }
 
-ul.main-nav {
-    margin: 0pt;
-    padding: 0pt;
-    float: right;
-    width: 100%;
-    list-style:none; 
-    background-image: url('/navbar.png');
-}
-
-ul.main-vav li, ul.main-nav li form input {
-    vertical-align: middle
+.pull-left {
+	float: left;
 }
 
 ul.main-nav li {
     float: right;
-    text-align: center;
-    padding: 4px 8px 4px 8px;
-    border-left: 1px solid #59d;
 }
 
-ul.main-nav li:hover
-{
-    background-image: url('/navbar2.png');
-}
-
-ul.main-nav li a {
-    vertical-align: middle;
-    text-decoration: none;
-    color: white; 
-    font-weight: bold;
+ul.nav.main-nav li {
+    float: right;
 }
 
 .sura_link, .sura_link a {
@@ -42,7 +23,6 @@ ul.main-nav li a {
 }
 
 .sura_link:hover {
-    color: white;
     background-image: url('/navbar.png');
 }
 

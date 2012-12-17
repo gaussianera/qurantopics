@@ -6,6 +6,7 @@ api_version: 1
 handlers:
 - url: /stylesheets
   static_dir: stylesheets
+  mime_type: text/css
 
 - url: /(.*\.(png|ico))
   static_files: static/images/\1
@@ -14,6 +15,10 @@ handlers:
 - url: /(.*\.(js))
   static_files: static/js/\1
   upload: static/js/(.*\.(js))
+  
+- url: /bootstrap/(.*)
+  static_files: static/bootstrap/\1
+  upload: static/bootstrap/.*
 
 - url: /load/.*
   script: controllers/data_loader.py

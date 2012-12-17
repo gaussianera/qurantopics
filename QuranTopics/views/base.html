@@ -4,68 +4,69 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ar" xml:lang="ar">
     <head>
         <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+        
         <title> {% block title %} مواضيع القرآن الكريم {% endblock %} </title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="Keywords" content="quran,topics,quran,qur'an,quran topics,مواضيع القرآن,القرآن,koran" />
         <meta name="Description" content="Create and share Quranic topics" />
         <meta name="verify-v1" content="PkGqCddHUaKd5FRR3hJGP5w7X1eC0d9ImWmT3LtOavw=" />
+        <link rel="stylesheet/less" href="/bootstrap/less/bootstrap.less">
+        <script src="/less-1.3.1.min.js" type="text/javascript"></script>
         <link rel="icon" type="image/x-icon" href="/favicon.ico" />
         {% block script %} {% endblock %}
     </head>
   
     <body dir="rtl">
-        
-        <div style="float: right;">
-            <h1 style="padding: 0px">
-                <a href="/"  style="text-decoration: none; color: #008800;" >  مواضيع القرآن الكريم </a>
-            </h1>
-        </div>
-        <div style="float: right; ">
-            <h3 style="margin-bottom: 0px; margin-top: 30pt; margin-right: 10pt">
-                حرر وشارك نتائج بحثك في القرآن الكريم
-            </h3>
-        </div>
-        
-        <div style="clear: both; width: 100%; ">
-        <ul class="main-nav">
-            <li> <a href="/" > الرئيسية </a> </li>
-            <li> <a href="/list_suras" > تصفح القرآن </a> </li>
-            {% if user %}
-            <li>
-                <a href="/topics/add_edit" > أضف موضوعاً </a>
-            </li>
-            {% endif %}
-            <li> <a href="http://groups.google.com/group/qurantopics" target="_blank"> مجموعة الرسائل </a> </li>
-            <li>
-                <form action="/search" method="post" style="margin: 0 0 0 0">
-                    <input type="text" name="search_for" />
-                    <input type="submit" name="search" value="بحث" />
-                </form>
-            </li>
-            <li>
-                <a href="/about" > حول الموقع </a>
-             </li>
-            <li style="float: left; ">
-                <a href="{{ user_link }}">
-                    {{ user }}
-                    {% if user %}
-                    خروج
-                    {% else %}
-                     لإنشاء مواضيع جديدة سجل الدخول (بحساب جوجل) 
-                    {% endif %}
-                </a>
-            </li>
-        </ul>
-        <br/>
-        </div>
-        
-        <br/>
-        
-        <div style="float: none; clear: both">
-            {% block content %}{% endblock %}
+    
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+				<div class="container-fluid">
+	                <a class="brand" href="/">الرئيسية</a>
+	                <ul class="nav">
+		                <li> <a href="/list_suras" > تصفح القرآن </a> </li>
+		                {% if user %}
+		                <li> <a href="/topics/add_edit" > أضف موضوعا </a> </li>
+		                {% endif %}
+		                <li> <a href="http://groups.google.com/group/qurantopics" target="_blank"> مجموعة الرسائل </a> </li>
+		                <li>
+		                    <a href="/about" > عن الموقع </a>
+		                 </li>
+	                </ul>
+	                <p class="navbar-text pull-left">
+	                    {{ user }}
+	                    <a href="{{ user_link }}" class="navbar-link">
+	                        {% if user %}
+	                        خروج
+	                        {% else %}
+	                         لإنشاء مواضيع جديدة سجل الدخول (بحساب جوجل) 
+	                        {% endif %}
+	                    </a>
+		            </p>
+		            <span class="divider-vertical pull-left"></span>
+                    <form class="navbar-search pull-left" action="/search" method="post">
+                        <input class="search-query" type="text" name="search_for" placeholder="بحث" />
+                    </form>
+                </div>            
+            </div>
         </div>
 
-        
+		<div class="container">
+			<div class="hero-unit">
+				<h1>مواضيع القرآن الكريم</h1>
+				<p>حرر وشارك نتائج بحثك في القرآن الكريم</p>
+			</div>
+	
+			<hr>
+			
+	        <div style="float: none; clear: both">
+	            {% block content %}{% endblock %}
+	        </div>
+		</div>
+
+
+        <script src="http://code.jquery.com/jquery-latest.js"></script>
+        <script src="bootstrap/js/bootstrap.min.js"></script>        
+
         <script type="text/javascript">
             var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
             document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
