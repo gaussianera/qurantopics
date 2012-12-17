@@ -9,12 +9,11 @@
 </h1>
 
 <div align="center">
-<p class="quran_font quran_section quran_text" style="width: 50%;">
+<p class="quran_font quran_section quran_text" style="width: 70%;">
 {% for aya in ayat %}
-	<a name="{{ aya.number }}">
+	<a name="{{ aya.number }}"></a>
      {{ aya.content }}
      ({{ aya.number }})
-    </a>
 {% endfor %}
 </p>
 </div>

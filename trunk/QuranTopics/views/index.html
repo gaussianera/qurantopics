@@ -1,10 +1,10 @@
-﻿{% extends "base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 
-<h3> المواضيع </h3>
 
-<ul>
+
+<ul class="nav nav-pills nav-stacked">
 {% for topic in topics %}
     <li> <a href="/topics/view/{{ topic.topic_id }}"> {{ topic.title }} </a> </li>
 {% endfor %}
