@@ -17,7 +17,6 @@ ul.nav.main-nav li {
 
 .sura_link, .sura_link a {
     color: navy;
-    width: 100%;
     text-decoration: none;
     text-align: left;
 }
@@ -26,8 +25,14 @@ ul.nav.main-nav li {
     background-image: url('/navbar.png');
 }
 
+@font-face {
+    font-family: "Uthmanic Hafs";
+    src: url(/UthmanicHafs1Ver09.otf) format("opentype");
+}
+
 .quran_font {
-    font-family: Traditional Arabic;
+/*    font-family: Uthmanic Hafs, Traditional Arabic; */
+	font-family: Traditional Arabic;
     font-size: x-large;
 }
 
@@ -38,5 +43,5 @@ ul.nav.main-nav li {
 
 .quran_section {
     text-align: justify;
-    padding: 5px;
+    padding: 10px;
 }
