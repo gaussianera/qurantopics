@@ -26,22 +26,30 @@ ul.nav.main-nav li {
 }
 
 @font-face {
-    font-family: "Uthmanic Hafs";
-    src: url(/UthmanicHafs1Ver09.otf) format("opentype");
+    font-family: "Scheherazade";
+    src: url(/ScheherazadeRegOT.ttf) format("truetype");
 }
 
+
 .quran_font {
-/*    font-family: Uthmanic Hafs, Traditional Arabic; */
-	font-family: Traditional Arabic;
-    font-size: x-large;
+    font-family: Scheherazade, Traditional Arabic;
 }
 
 .quran_text {
     line-height: 2;
-    background-color: #FFFFBB; 
+    font-size: 30px;
+	background-color: #FFFFBB; 
 }
 
 .quran_section {
     text-align: justify;
     padding: 10px;
+}
+
+.title-input {
+	width: 500px;
+}
+
+.aya-input {
+	width: 100px;
 }
