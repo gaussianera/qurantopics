@@ -13,42 +13,41 @@
 {% endif %}
 
 {% if topic.message %}
-    <div style="font-weight: bold; background-color: silver;" > &nbsp; {{ topic.message }} </div>
+    <div class="alert fade in"> &nbsp; {{ topic.message }} </div>
     <br/>
 {% endif %}
 
-<form method="post">
+<form method="post" class="form-inline">
 
     {% if topic.topic_id %}
         <input name="topic_id" type="hidden" value="{{ topic.topic_id }}" />
     {% endif %}
     
-		  <label> عنوان الموضوع * </label>
-    <input name="title" type="text" size="75" value="{{ topic.title }}" />
+    <label> عنوان الموضوع * </label>
+    <input name="title" type="text" class="title-input" value="{{ topic.title }}" />
     
     <hr/>
     <label> أضف آيات: </label>
 		  <label> رقم السورة *  </label>
-    <input name="sura" type="text" />
+    <input name="sura" type="text" class="aya-input"/>
 		  <label> من آيه *  </label>
-    <input name="from_aya" type="text" />
+    <input name="from_aya" type="text" class="aya-input" />
 		  <label> حتى آية  </label>
-    <input name="to_aya" type="text" />
+    <input name="to_aya" type="text" class="aya-input" />
     <label> ترتيب </label>
-    <input name="position" type="text" />
-		  <input name="add" type="submit" value="أضف" >
+    <input name="position" type="text" class="aya-input" />
+		  <input name="add" type="submit" value="أضف" class="btn">
     <hr/>             
     		  
-		  <input name="remove" type="submit" value="احذف" > |
-    <input name="move_to_position" type="submit" value="غير الترتيب إلى:" >
-    <input name="to_position" type="text" />
+    <input name="remove" type="submit" value="احذف" class="btn" > |
+    <input name="move_to_position" type="submit" value="غير الترتيب إلى:" class="btn" >
+    <input name="to_position" type="text" class="aya-input" />
     
     <p/>		  
     
     <table id="ayat_table">
         {% for aya in topic.ayat_display %}
-        <tr>
-        
+        <tr style="height: 30px">
             <input name="sura_{{ forloop.counter }}" value="{{ aya.sura_number }}" type="hidden"/>       
             <input name="sura_name_{{ forloop.counter }}" value="{{ aya.sura_name }}" type="hidden"/>       
             <input name="aya_{{ forloop.counter }}" value="{{ aya.aya_number }}" type="hidden"/>
@@ -59,11 +58,11 @@
                 <img src="/left-arrow.png" hight="20px" width="20px" onclick="moveSelectedBefor(this)" title="غير ترتيب الآيات المختارة"/>
                 <input type="hidden" name="position_{{ forloop.counter }}" value="{{ forloop.counter }}"/>
             </td>
-            <td valign="bottom"> <input name="selected_{{ forloop.counter }}" type="checkbox" value="on"/> </td>       
-            <td valign="top"> {{ forloop.counter }}. </td>
-            <td valign="top"> [{{ aya.sura_number }}:{{ aya.sura_name }}] </td>
-            <td valign="top"> ({{ aya.aya_number }}) </td>
-            <td valign="top"> {{ aya.aya_content }} </td>
+            <td> <input name="selected_{{ forloop.counter }}" type="checkbox" value="on"/> </td>       
+            <td valign="bottom"> {{ forloop.counter }}. </td>
+            <td valign="bottom"> [{{ aya.sura_number }}:{{ aya.sura_name }}] </td>
+            <td valign="bottom" style="padding-left: 10px; padding-right: 10px;"> ({{ aya.aya_number }}) </td>
+            <td valign="bottom"> {{ aya.aya_content }} </td>
         </tr>
         {% endfor %}
     </table>
@@ -71,7 +70,7 @@
   
     <div align="center">
         <hr>
-        <input name="save" type="submit" value="احفظ الموضوع" >
+        <input name="save" type="submit" value="احفظ الموضوع" class="btn" >
     </div>
 </form>
 

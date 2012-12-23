@@ -22,7 +22,7 @@
     <td>
     <form method="post">
         <input name="topic_id" type="hidden" value="{{ topic.topic_id }}" />
-        <input class="btn" name="delete" type="submit" value="احذف الموضوع" onclick="return confirm('هل ترغب في حذف الموضوع؟')">
+        <input class="btn" name="delete" type="submit" value="احذف الموضوع" onclick="return confirm('هل أنت متأكد من رغبتك حذف الموضوع؟')">
     </form>
     </td>
     </tr>
@@ -48,7 +48,7 @@
             <div class="span8 quran_section quran_text topic_ayat">
     {% endif %}
         		{{ line.aya_content }}
-        		<a href="/display_sura/{{ line.sura_number }}#{{ line.aya_number }}" class="sura_link">({{ line.aya_number }})</a>
+        		<a href="/display_sura/{{ line.sura_number }}#{{ line.aya_number }}" class="sura_link">﴿{{ line.aya_number }}﴾</a>
 {% endfor %}
 	</div>
 </div>

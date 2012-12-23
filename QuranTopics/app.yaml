@@ -8,9 +8,9 @@ handlers:
   static_dir: stylesheets
   mime_type: text/css
   
-- url: /UthmanicHafs1Ver09.otf
-  static_files: static/UthmanicHafs1Ver09.otf
-  upload: static/UthmanicHafs1Ver09.otf
+- url: /(.*\.(otf|ttf))
+  static_files: static/\1
+  upload: static/(.*)
 
 - url: /(.*\.(png|ico))
   static_files: static/images/\1
