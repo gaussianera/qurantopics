@@ -1,0 +1,1 @@
+Assemble and share Quranic verses
